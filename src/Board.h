@@ -1,6 +1,7 @@
 #pragma once
 #include "Brick.h"
 #include "Mixer.h"
+#include "Renderer.h"
 
 namespace bitsoccer
 {
@@ -25,14 +26,13 @@ namespace bitsoccer
 
 		void Draw();
 		~Board();
+
 	private:
-
-		
-
 		bool m_initialized;
 		u32 m_width;
 		u32 m_height;
 		Brick** m_bricks;
+		Renderer::HitSurface* m_hitSurfaces;
 		
 		
 	};
