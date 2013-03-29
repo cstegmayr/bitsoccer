@@ -44,6 +44,13 @@ namespace bitsoccer {
 				}
 			}
 		}
+		Brick* b = board.GetBrick(1,1);
+		for ( u32 k = 0;  k < Direction::NumDirections; ++k )
+			b->SetColor((Direction::Type)k, Color::Blue);
+		b = board.GetBrick(numRows-2,numCols-2);
+		for ( u32 k = 0;  k < Direction::NumDirections; ++k )
+			b->SetColor((Direction::Type)k, Color::Red);
+
 	}
 
 	MixerRandom::~MixerRandom()
