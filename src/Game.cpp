@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game.h"
+#include "Renderer.h"
 
 namespace bitsoccer
 {
@@ -14,6 +15,7 @@ namespace bitsoccer
 
 	void Game::Draw()
 	{
+		m_board.Draw();
 	}
 
 	Game::~Game()

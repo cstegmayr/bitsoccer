@@ -17,6 +17,7 @@ namespace bitsoccer
 		u32 getSize();
 		u32 getWidth();
 		u32 getHeight();
+		void Draw();
 		~Board();
 	private:
 		u32 m_width;

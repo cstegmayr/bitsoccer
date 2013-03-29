@@ -1,12 +1,16 @@
 #include "Brick.h"
+#include "Renderer.h"
+
+#include <string.h> // For memset
 
 namespace bitsoccer
 {
 	Brick::Brick()
 	{
 		// initialize everything green
-		for ( u8 i = 0; i < Direction::NumDirections ; ++i )
+		for (int i = 0; i < Direction::NumDirections; ++i)
 			m_colors[i] = Color::Green;
+		m_colors[Direction::North] = Color::Red;
 	}
 
 	void Brick::SetColor( Direction::Type dir, Color::Type color )
@@ -30,5 +34,42 @@ namespace bitsoccer
 		}
 		// All colors are same as player color.
 		return true;
+	}
+
+	void Brick::Draw(float posX, float posY, float size)
+	{
+		Vec3 colors[] = {Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 0.0f)};
+
+		float halfSize = size / 2.0f;
+		float centerX = posX + halfSize;
+		float centerY = posY + halfSize;
+
+		// TRI NORTH
+		Vec3 color = colors[m_colors[Direction::North]];
+		glColor3f(color.r, color.g, color.b);
+		glVertex2f(centerX, centerY);
+		glVertex2f(centerX-halfSize, centerY+halfSize);
+		glVertex2f(centerX+halfSize, centerY+halfSize);
+
+		// TRI EAST
+		color = colors[m_colors[Direction::East]];
+		glColor3f(color.r, color.g, color.b);
+		glVertex2f(centerX, centerY);
+		glVertex2f(centerX+halfSize, centerY+halfSize);
+		glVertex2f(centerX+halfSize, centerY-halfSize);
+
+		// TRI SOUTH
+		color = colors[m_colors[Direction::South]];
+		glColor3f(color.r, color.g, color.b);
+		glVertex2f(centerX, centerY);
+		glVertex2f(centerX+halfSize, centerY-halfSize);
+		glVertex2f(centerX-halfSize, centerY-halfSize);
+
+		// TRI WEST
+		color = colors[m_colors[Direction::West]];
+		glColor3f(color.r, color.g, color.b);
+		glVertex2f(centerX, centerY);
+		glVertex2f(centerX-halfSize, centerY-halfSize);
+		glVertex2f(centerX-halfSize, centerY+halfSize);
 	}
 }

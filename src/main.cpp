@@ -1,11 +1,20 @@
 #include "Game.h"
+#include "Renderer.h"
 
 int main(int argc, const char** argv)
 {
-	bitsoccer::Game g;
+	using namespace bitsoccer;
+	
+	Renderer::Initialize(argc, argv);
+
+	Game g;
 	g.Initialize();
 
-	g.Draw();
+	do
+	{
+		g.Draw();
+		Renderer::DrawCallback();
+	} while (Renderer::IsRunning());
 
 
 	return 0;

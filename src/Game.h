@@ -1,5 +1,5 @@
 #include "Types.h"
-#include "Brick.h"
+#include "Board.h"
 
 namespace bitsoccer
 {
@@ -11,5 +11,7 @@ namespace bitsoccer
 		void Draw();
 		void MakeNextMove(MoveDirection::Type d, u32 position);
 		~Game();
+	private:
+		Board m_board;
 	};
 }

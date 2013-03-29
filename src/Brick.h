@@ -13,6 +13,7 @@ namespace bitsoccer
 		bool        IsGoal( Player::Type );
 		void        rotateCW();
 		void        rotateCCW();
+		void		Draw(float posX, float posY, float size);
 
 	private:
 		Color::Type m_colors[Direction::NumDirections];
