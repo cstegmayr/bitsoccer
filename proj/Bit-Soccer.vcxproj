@@ -37,10 +37,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\cstegmayr\Documents\Bit-Soccer\external\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\external\glfw\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\cstegmayr\Documents\Bit-Soccer\external\glfw\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\external\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -67,14 +67,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\Ball.h" />
     <ClInclude Include="..\src\Board.h" />
     <ClInclude Include="..\src\Brick.h" />
+    <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\Game.h" />
     <ClInclude Include="..\src\Mixer.h" />
     <ClInclude Include="..\src\Renderer.h" />
     <ClInclude Include="..\src\Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Ball.cpp" />
     <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\Brick.cpp" />
     <ClCompile Include="..\src\Game.cpp" />
