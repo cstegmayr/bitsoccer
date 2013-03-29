@@ -10,7 +10,7 @@ typedef short s16;
 typedef int s32;
 typedef long s64;
 
-namespace bitsocker
+namespace bitsoccer
 {
 	namespace Player
 	{
@@ -52,9 +52,9 @@ namespace bitsocker
 	{
 	enum Type
 	{
+		Green,
 		Red,
 		Blue,
-		Green,
 		RedGoal,
 		BlueGoal
 	};
