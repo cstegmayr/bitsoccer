@@ -15,4 +15,8 @@ namespace bitsoccer
 	void Game::Draw()
 	{
 	}
+
+	Game::~Game()
+	{
+	}
 }
