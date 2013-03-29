@@ -11,5 +11,8 @@ namespace bitsoccer
 		void Draw();
 		void MakeNextMove(MoveDirection::Type d, u32 position);
 		~Game();
+	private:
+		Board m_board;
+		MixerBase* m_mixer;
 	};
 }

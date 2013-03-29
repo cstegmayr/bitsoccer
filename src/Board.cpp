@@ -1,4 +1,5 @@
 #include "Board.h"
+#include <assert.h>
 namespace bitsoccer
 {
 	Board::Board()
@@ -23,6 +24,12 @@ namespace bitsoccer
 
 	void Board::Initialize( const MixerBase* mixer )
 	{ 
+	}
+
+	Brick& Board::GetBrick( u32 index )
+	{
+		assert( index < getSize() );
+		return m_board[index];
 	}
 	
 	Board::~Board()

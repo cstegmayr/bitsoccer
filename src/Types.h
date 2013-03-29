@@ -59,5 +59,15 @@ namespace bitsoccer
 		BlueGoal
 	};
 	}
+
+	namespace ConfigVarType
+	{
+	enum Type 
+	{
+		Int,
+		Float,
+		Bool
+	};
+	}
 }
 
