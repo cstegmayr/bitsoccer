@@ -18,8 +18,7 @@ namespace bitsoccer
 		u32 GetMoveDirections(Board& board);
 
 	private:
-		u32 m_row;
-		u32 m_col;
+		Brick* m_currentBrick;
 		Brick* m_neighbourBricks[Direction::NumDirections];
 	};
 }

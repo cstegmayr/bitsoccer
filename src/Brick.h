@@ -14,8 +14,13 @@ namespace bitsoccer
 		void        rotateCW();
 		void        rotateCCW();
 		void		Draw(float posX, float posY, float size);
+		void		NotifyPosition( u32 row, u32 col );
+		u32			GetRow() const;	
+		u32			GetCol() const;	
 
 	private:
 		Color::Type m_colors[Direction::NumDirections];
+		u32 m_row;
+		u32 m_col;
 	};
 }

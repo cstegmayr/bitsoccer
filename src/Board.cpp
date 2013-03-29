@@ -144,6 +144,7 @@ namespace bitsoccer
 			
 			Brick* tmp = m_bricks[index];
 			m_bricks[index] = brick;
+			brick->NotifyPosition(row + rowIncrement*i,col + colIncrement*i);
 			brick = tmp;
 		}
 		return brick;
