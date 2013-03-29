@@ -17,6 +17,22 @@ namespace bitsoccer
 		m_colors[dir] = color;
 	}
 	
+	u32 Brick::GetRow() const
+	{
+		return m_row;
+	}
+
+	u32 Brick::GetCol() const
+	{
+		return m_col;
+	}
+
+	void Brick::NotifyPosition( u32 row, u32 col )
+	{
+		m_row = row;
+		m_col = col;
+	}
+
 	Color::Type Brick::GetColor( Direction::Type dir )
 	{
 		return m_colors[dir];

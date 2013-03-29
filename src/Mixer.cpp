@@ -23,14 +23,24 @@ namespace bitsoccer {
 	{
 		const u32 numRows = board.GetWidth();
 		const u32 numCols = board.GetHeight();
+
 		for ( u32 i = 0; i < numRows; ++i )
 		{
 			for ( u32 j = 0; j < numCols; ++j )
 			{
+				u32 firstColor = 0;
 				for ( u32 k = 0;  k < Direction::NumDirections; ++k )
 				{
 					u32 randomU32 = GetRandomValue(0, (u32)Color::Green);
-					board.GetBrick(i,j)->SetColor((Direction::Type)k, (Color::Type)randomU32);
+					bool allColorsSame = true;
+					if ( k == 0 )
+						firstColor = randomU32;
+					allColorsSame &= randomU32 == firstColor;
+					if( k == Direction::NumDirections - 1 && allColorsSame )
+						randomU32 = (randomU32+1)%Direction::NumDirections;
+					Brick* b = board.GetBrick(i,j);
+					b->SetColor((Direction::Type)k, (Color::Type)randomU32);
+					b->NotifyPosition(i,j);
 				}
 			}
 		}

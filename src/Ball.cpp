@@ -8,6 +8,7 @@ namespace bitsoccer
 	{
 		m_row = 0;
 		m_col = 0;
+		m_currentBrick = 0L;
 	}
 
 	u32 Ball::GetRow() const
@@ -22,40 +23,48 @@ namespace bitsoccer
 
 	void Ball::SetPosition(u32 row, u32 col, Board& board)
 	{
-		m_row = row;
-		m_col = col;
-		m_neighbourBricks[Direction::North] = board.GetBrick(m_row  ,m_col+1);
-		m_neighbourBricks[Direction::East ] = board.GetBrick(m_row+1,m_col  );
+		m_currentBrick = board.GetBrick(row,col);
+		m_neighbourBricks[Direction::North] = board.GetBrick(row  ,col+1);
+		m_neighbourBricks[Direction::East ] = board.GetBrick(row+1,col  );
 		if ( m_col > 0 )
-			m_neighbourBricks[Direction::South] = board.GetBrick(m_row  ,m_col-1);
+			m_neighbourBricks[Direction::South] = board.GetBrick(row  ,col-1);
 		else
 			m_neighbourBricks[Direction::South] = 0L;
 		if ( m_row > 0 )
-			m_neighbourBricks[Direction::West ] = board.GetBrick(m_row-1,m_col);
+			m_neighbourBricks[Direction::West ] = board.GetBrick(row-1,col);
 		else
 			m_neighbourBricks[Direction::West ] = 0L;
 	}
 
 	void Ball::GetPosition( u32& row, u32& col ) const
 	{
-		row = m_row;
-		col = m_col;
+		if ( m_currentBrick == 0L )
+		{
+			row = 0;
+			col = 0;
+			return;
+		}
+		row = m_currentBrick->GetRow();
+		col = m_currentBrick->GetCol();
 	}
 
 	// return possible to move directions
 	u32 Ball::GetMoveDirections( Board& board )
 	{
+		u32 row;
+		u32 col;
+		board.GetPosition(row,col);
 		u32 moveDirections = 0;
-		if ( m_neighbourBricks[Direction::North] != board.GetBrick(m_row, m_col+1) )
+		if ( m_neighbourBricks[Direction::North] != board.GetBrick(row, col+1) )
 			moveDirections |= MoveDirection::ToNorth;
 		
-		if ( m_neighbourBricks[Direction::East ] != board.GetBrick(m_row+1, m_col  ) ) 
+		if ( m_neighbourBricks[Direction::East ] != board.GetBrick(row+1, col  ) ) 
 			moveDirections |= MoveDirection::ToEast;
 		
-		if ( m_col > 0 && m_neighbourBricks[Direction::South] != board.GetBrick(m_row, m_col-1) )
+		if ( m_col > 0 && m_neighbourBricks[Direction::South] != board.GetBrick(row, col-1) )
 			moveDirections |= MoveDirection::ToSouth;
 	
-		if ( m_row > 0 && m_neighbourBricks[Direction::West ] != board.GetBrick(m_row-1, m_col) )
+		if ( m_row > 0 && m_neighbourBricks[Direction::West ] != board.GetBrick(row-1, col) )
 			moveDirections |= MoveDirection::ToWest;
 
 		return moveDirections;
