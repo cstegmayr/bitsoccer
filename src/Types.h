@@ -25,11 +25,11 @@ namespace bitsoccer
 	{
 	enum Type
 	{
-		North,
-		East,
-		South,
-		West,
-		NumDirections
+		North = 1<<0,
+		East = 1<<1,
+		South = 1<<2,
+		West = 1<<3,
+		NumDirections = 4 // ugly
 	};
 	}
 

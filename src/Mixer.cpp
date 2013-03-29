@@ -6,7 +6,7 @@ namespace bitsoccer {
 	{
 	}
 	
-	void MixerRandom::mix( Board& board )
+	void MixerRandom::Mix( Board& board )
 	{
 		const u32 numRows = board.GetWidth();
 		const u32 numCols = board.GetHeight();
