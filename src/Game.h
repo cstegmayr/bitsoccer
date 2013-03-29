@@ -1,7 +1,7 @@
 #include "Types.h"
 #include "Brick.h"
 
-namespace bitsocccer
+namespace bitsoccer
 {
 	class Game
 	{
