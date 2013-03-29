@@ -28,7 +28,8 @@ namespace bitsocker
 		North,
 		East,
 		South,
-		West
+		West,
+		NumDirections
 	};
 	}
 
