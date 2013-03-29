@@ -52,9 +52,9 @@ namespace bitsoccer
 	{
 	enum Type
 	{
-		Green,
-		Red,
-		Blue,
+		Red = Player::Red,
+		Blue = Player::Blue,
+        Green,
 		RedGoal,
 		BlueGoal
 	};
