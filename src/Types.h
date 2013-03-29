@@ -37,14 +37,14 @@ namespace bitsoccer
 	{
 	enum Type
 	{
-		FromNorth,
-		FromEast,
-		FromSouth,
-		FromWest,
-		ToNorth = FromSouth,
-		ToEast = FromWest,
-		ToSouth = FromNorth,
-		ToWest = FromEast
+		ToNorth = 1<<0,
+		ToEast = 1<<1,
+		ToSouth = 1<<2,
+		ToWest = 1<<3,
+		FromNorth = ToSouth,
+		FromEast = ToWest,
+		FromSouth = ToNorth,
+		FromWest = ToEast
 	};
 	}
 
