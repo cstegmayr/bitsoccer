@@ -15,7 +15,7 @@ namespace bitsoccer
 	{
 		m_board.Initialize();
 		m_mixer->Mix(m_board);
-		m_ball->SetPosition(m_board.getWidth()/2,m_board.getHeight()/2,m_board);
+		m_ball->SetPosition(m_board.GetWidth()/2, m_board.GetHeight()/2, m_board);
 	}
 
 	void Game::Draw()

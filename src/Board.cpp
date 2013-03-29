@@ -3,6 +3,8 @@
 
 #include <assert.h>
 #include <math.h>
+#include <stdlib.h>
+
 namespace bitsoccer
 {
 	Board::Board()
@@ -33,7 +35,7 @@ namespace bitsoccer
 					
 					glColor3f(posX*0.5f + 0.5f, posY*0.5f + 0.5f, 0.0f);
 
-					m_board[w][h].Draw(posX, posY, scale);
+					GetBrick(w, h)->Draw(posX, posY, scale);
 				}
 			}
 		}
@@ -79,13 +81,13 @@ namespace bitsoccer
 
 	void Board::Initialize()
 	{
-		m_board = (Block*)malloc(sizeof(Block*) * m_width * m_height);
+		m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
 		for (u32 i = 0; i < m_width; ++i)
 		{
 			for ( u32 j = 0; j < m_height; ++j)
 			{
 				u32 index = CalcIndex(i,j);
-				m_board[index] = new Block();
+				m_bricks[index] = new Brick();
 			}
 		}
 		m_initialized = true; 
@@ -94,21 +96,22 @@ namespace bitsoccer
 	Brick* Board::GetBrick( u32 row, u32 col )
 	{
 		u32 index = CalcIndex(row,col);
-		assert( index < getSize() );
-		if ( index >= getSize() )
-			return 0L;
-		return m_board[index];
+		if ( index >= GetSize() )
+			return nullptr;
+		return m_bricks[index];
 	}
 
 	Brick* Board::Push( Direction::Type dir, u32 row, u32 col, Brick* brick )
 	{
-		u32 rowIncrement = dir == Direction::East  ? 1 : ( dir == Direction::West  ? -1 : 0 );
-		u32 colIncrement = dir == Direction::North ? 1 : ( dir == Direction::South ? -1 : 0 );
-		u32 numIterations = fabs( GetWidth()*rowIncrement + GetHeight()*colIncrement);
+		s32 rowIncrement = dir == Direction::East  ? 1 : ( dir == Direction::West  ? -1 : 0 );
+		s32 colIncrement = dir == Direction::North ? 1 : ( dir == Direction::South ? -1 : 0 );
+		u32 numIterations = (u32)abs( (s32)GetWidth()*rowIncrement + (s32)GetHeight()*colIncrement);
 		for ( u32 i = 0; i < numIterations; ++i ) 
-		{
-			Brick* tmp = m_board[row + rowIncrement*i ][col + colIncrement*i];
-			m_board[row + rowIncrement*i ][col + colIncrement*i] = brick;
+		{			
+			u32 index = CalcIndex(row + rowIncrement*i,col + colIncrement*i);
+			
+			Brick* tmp = m_bricks[index];
+			m_bricks[index] = brick;
 			brick = tmp;
 		}
 		return brick;

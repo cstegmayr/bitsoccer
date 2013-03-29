@@ -6,16 +6,16 @@ namespace bitsoccer
 	class MixerBase
 	{
 	public:
-		virtual void mix(Board* board) = 0;
+		virtual void Mix(Board& board) = 0;
 	private:
 	};
 
-	class MixerRandom : MixerBase
+	class MixerRandom : public MixerBase
 	{
 	public:
 		MixerRandom();
 		~MixerRandom();
-		virtual void Mix(Board* board);
+		virtual void Mix(Board& board);
 	private:
 	};
 

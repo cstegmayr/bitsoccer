@@ -3,14 +3,15 @@
 namespace bitsoccer
 {
 	class Board;
+	class Brick;
 
 	class Ball
 	{
 	public:
 		Ball();
-		Draw();
+		void Draw();
 		void SetPosition( u32  row, u32  col, Board& board );
-		void GetPosition( u32& row, u32 col ) const;
+		void GetPosition( u32& row, u32& col ) const;
 		u32 GetRow() const;
 		u32 GetCol() const;
 		// return possible directions to go
@@ -19,6 +20,6 @@ namespace bitsoccer
 	private:
 		u32 m_row;
 		u32 m_col;
-		Brick* m_bricks;
+		Brick* m_neighbourBricks[Direction::NumDirections];
 	};
 }

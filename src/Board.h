@@ -10,18 +10,18 @@ namespace bitsoccer
 		{
 			kBoardWidth = 8,
 			kBoardHeight = 12
-		}
+		};
 	public:
 		Board();
 		void Initialize();
 		u32 GetSize();
 		u32 GetWidth();
-		bool SetWidth();
+		bool SetWidth(u32 width);
 		u32 GetHeight();
-		bool SetHeight();
-		Brick& GetBrick();
+		bool SetHeight(u32 height);
+		Brick* GetBrick(u32 row, u32 col);
 		u32 CalcIndex(u32 i, u32 j);
-		Brick Push( Direction::Type dir, u32 row, u32 col, Brick brick );
+		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 
 		void Draw();
 		~Board();
@@ -32,7 +32,7 @@ namespace bitsoccer
 		bool m_initialized;
 		u32 m_width;
 		u32 m_height;
-		Brick* m_board;
+		Brick** m_bricks;
 		
 		
 	};

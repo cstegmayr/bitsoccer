@@ -10,15 +10,14 @@ namespace bitsoccer
 		// initialize everything green
 		for (int i = 0; i < Direction::NumDirections; ++i)
 			m_colors[i] = Color::Green;
-		m_colors[Direction::North] = Color::Red;
 	}
 
-	void Brick::SetColor( Direction::type dir, Color::type color )
+	void Brick::SetColor( Direction::Type dir, Color::Type color )
 	{
 		m_colors[dir] = color;
 	}
 	
-	Color::type Brick::GetColor( Direction::type dir )
+	Color::Type Brick::GetColor( Direction::Type dir )
 	{
 		return m_colors[dir];
 	}
@@ -38,19 +37,24 @@ namespace bitsoccer
 
 	void Brick::rotateCW()
 	{	
-		u32 prev = m_colors[0];
-		for ( u32 i = 0; i < Directions::NumDirections; ++i )
+		Color::Type prev = m_colors[0];
+		for ( u32 i = 0; i < Direction::NumDirections; ++i )
 		{
-			u32 tmp = m_colors[(i+1)%(Directions::NumDirections)];
-			m_colors[(i+1)%(Directions::NumDirections)] = prev;
+			Color::Type tmp = m_colors[(i+1)%(Direction::NumDirections)];
+			m_colors[(i+1)%(Direction::NumDirections)] = prev;
 			prev = tmp;
 		}
-		m_colors[0]=prev;
+		m_colors[0] = prev;
 	}
 
 	void Brick::Draw(float posX, float posY, float size)
 	{
-		Vec3 colors[] = {Vec3(1.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 1.0f), Vec3(0.0f, 1.0f, 0.0f)};
+		Vec3 colors[] = {
+			Vec3(1.0f, 0.0f, 0.0f), 
+			Vec3(0.0f, 0.0f, 1.0f), 
+			Vec3(0.0f, 1.0f, 0.0f), 
+			Vec3(0.7f, 0.0f, 0.0f), 
+			Vec3(0.0f, 0.0f, 0.7f)};
 
 		float halfSize = size / 2.0f;
 		float centerX = posX + halfSize;
