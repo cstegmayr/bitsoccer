@@ -7,7 +7,7 @@ namespace bitsoccer {
 	
 	void MixerRandom::mix( Board* board )
 	{
-
+		for ( 
 	}
 
 	MixerRandom::~MixerRandom()

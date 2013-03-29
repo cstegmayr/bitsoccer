@@ -13,6 +13,9 @@ namespace bitsoccer
 	public:
 		Board();
 		void Initialize( const Mixer* mixer );
+		u32 getSize();
+		u32 getWidth();
+		u32 getHeight();
 		~Board();
 	private:
 		u32 m_width;

@@ -17,4 +17,14 @@ namespace
 	{
 		return m_colors[dir];
 	}
+
+	bool Brick::IsGoal( Player::Type player )
+	{
+		for ( u32 i = 0; i < Direction::NumDirections; ++i )
+		{
+			if ( m_colors[i] != player )
+				return false;
+		}
+		return true;
+	}
 }
