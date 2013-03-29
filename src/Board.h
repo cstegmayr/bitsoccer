@@ -1,11 +1,7 @@
 #pragma once
 #include "Brick.h"
-<<<<<<< HEAD:Board.h
 #include "Mixer.h"
-=======
 
-
->>>>>>> a433352657e109ea9a34a43b0d535c2f809f6203:src/Board.h
 namespace bitsoccer
 {
 	class Board {
@@ -17,7 +13,7 @@ namespace bitsoccer
 		};
 	public:
 		Board();
-		void Initialize( const Mixer* mixer );
+		void Initialize( const MixerBase* mixer );
 		u32 getSize();
 		u32 getWidth();
 		u32 getHeight();

@@ -16,6 +16,6 @@ namespace bitsoccer
 		~MixerRandom();
 		virtual void mix(Board* board);
 	private:
-	}
+	};
 
 }
