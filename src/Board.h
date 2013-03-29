@@ -10,19 +10,29 @@ namespace bitsoccer
 		{
 			kBoardWidth = 8,
 			kBoardHeight = 12
-		};
+		}
 	public:
 		Board();
-		void Initialize( const MixerBase* mixer );
-		u32 getSize();
-		u32 getWidth();
-		u32 getHeight();
+		void Initialize();
+		u32 GetSize();
+		u32 GetWidth();
+		bool SetWidth();
+		u32 GetHeight();
+		bool SetHeight();
+		Brick& GetBrick();
+		u32 CalcIndex(u32 i, u32 j);
+		Brick Push( Direction::Type dir, u32 row, u32 col, Brick brick );
+
 		void Draw();
 		~Board();
 	private:
+
+		
+
+		bool m_initialized;
 		u32 m_width;
 		u32 m_height;
-		Brick m_board[kBoardWidth][kBoardHeight];
+		Brick* m_board;
 		
 		
 	};

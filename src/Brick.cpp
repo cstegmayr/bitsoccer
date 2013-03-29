@@ -13,12 +13,12 @@ namespace bitsoccer
 		m_colors[Direction::North] = Color::Red;
 	}
 
-	void Brick::SetColor( Direction::Type dir, Color::Type color )
+	void Brick::SetColor( Direction::type dir, Color::type color )
 	{
 		m_colors[dir] = color;
 	}
 	
-	Color::Type Brick::GetColor( Direction::Type dir )
+	Color::type Brick::GetColor( Direction::type dir )
 	{
 		return m_colors[dir];
 	}
@@ -34,6 +34,18 @@ namespace bitsoccer
 		}
 		// All colors are same as player color.
 		return true;
+	}
+
+	void Brick::rotateCW()
+	{	
+		u32 prev = m_colors[0];
+		for ( u32 i = 0; i < Directions::NumDirections; ++i )
+		{
+			u32 tmp = m_colors[(i+1)%(Directions::NumDirections)];
+			m_colors[(i+1)%(Directions::NumDirections)] = prev;
+			prev = tmp;
+		}
+		m_colors[0]=prev;
 	}
 
 	void Brick::Draw(float posX, float posY, float size)

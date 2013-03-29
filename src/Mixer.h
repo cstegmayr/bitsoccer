@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.h"
 namespace bitsoccer
 {
 	class Board;
@@ -14,7 +15,7 @@ namespace bitsoccer
 	public:
 		MixerRandom();
 		~MixerRandom();
-		virtual void mix(Board* board);
+		virtual void Mix(Board* board);
 	private:
 	};
 

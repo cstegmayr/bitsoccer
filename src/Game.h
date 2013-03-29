@@ -1,5 +1,6 @@
 #include "Types.h"
 #include "Board.h"
+#include "Ball.h"
 
 namespace bitsoccer
 {
@@ -13,5 +14,7 @@ namespace bitsoccer
 		~Game();
 	private:
 		Board m_board;
+		MixerBase* m_mixer;
+		Ball* m_ball;
 	};
 }
