@@ -1,5 +1,6 @@
 #include "Brick.h"
-namespace
+
+namespace bitsoccer
 {
 	Brick::Brick()
 	{
@@ -8,12 +9,12 @@ namespace
 			m_colors[i] = Color::Green;
 	}
 
-	void Brick::SetColor( Direction::type dir, Color::type color )
+	void Brick::SetColor( Direction::Type dir, Color::Type color )
 	{
 		m_colors[dir] = color;
 	}
 	
-	Color::type Brick::SetColor( Direction::type dir )
+	Color::Type Brick::GetColor( Direction::Type dir )
 	{
 		return m_colors[dir];
 	}

@@ -1,18 +1,20 @@
 #pragma once
 
+#include "Types.h"
+
 namespace bitsoccer
 {
 	class Brick
 	{
 	public:
 		Brick();
-		void        SetColor( Direction::type dir, Color::type color );
-		Color::type GetColor( Direction::type );
+		void        SetColor( Direction::Type dir, Color::Type color );
+		Color::Type GetColor( Direction::Type );
 		bool        IsGoal( Player::Type );
 		void        rotateCW();
 		void        rotateCCW();
 
 	private:
-		u8 m_directions[Direction::NumDirections];
+		Color::Type m_colors[Direction::NumDirections];
 	};
 }

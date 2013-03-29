@@ -4,9 +4,8 @@ namespace bitsoccer
 	Board::Board()
 	{
 		m_width  = kBoardWidth;
-		m_heigth = kBoardHeight;
+		m_height = kBoardHeight;
 	}
-<<<<<<< HEAD:Board.cpp
 	
 	u32 Board::getSize()
 	{
@@ -16,18 +15,14 @@ namespace bitsoccer
 	{
 		return m_width;
 	}
+
 	u32 Board::getHeight()
 	{
 		return m_height;
 	}
 
-	void Board::Initialize()
+	void Board::Initialize( const MixerBase* mixer )
 	{ 
-=======
-
-	void Board::Initialize()
-	{
->>>>>>> a433352657e109ea9a34a43b0d535c2f809f6203:src/Board.cpp
 	}
 	
 	Board::~Board()
