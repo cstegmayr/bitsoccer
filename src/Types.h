@@ -81,5 +81,15 @@ namespace bitsoccer
 			struct {float x,y,z;};
 		};
 	};
+
+	namespace HitState
+	{
+	enum Type
+	{
+		Hold,
+		Pressed,
+		Released
+	};
+	}
 }
 

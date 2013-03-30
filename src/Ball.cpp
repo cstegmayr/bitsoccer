@@ -16,7 +16,7 @@ namespace bitsoccer
 
 	u32 Ball::GetCol() const
 	{
-		return m_currentBrick->GetCol();		
+		return m_currentBrick->GetCol();
 	}
 
 	void Ball::SetPosition(u32 row, u32 col, Board& board)
