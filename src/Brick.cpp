@@ -78,13 +78,16 @@ namespace bitsoccer
 		float centerY = posY + halfSize;
 
 		// Background lower
-		glColor3f(0.8f, 0.8f, 0.8f);
+		if (IsGoal(Player::Blue) || IsGoal(Player::Red))
+			glColor3f(0.3f, 0.3f, 0.3f);
+		else
+			glColor3f(0.8f, 0.8f, 0.8f);
+
 		glVertex2f(posX, posY);
 		glVertex2f(posX, posY+size);
 		glVertex2f(posX+size, posY);
 		
 		// Background upper
-		glColor3f(0.8f, 0.8f, 0.8f);
 		glVertex2f(posX+size, posY+size);
 		glVertex2f(posX+size, posY);
 		glVertex2f(posX, posY+size);
