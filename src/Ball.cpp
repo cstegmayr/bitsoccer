@@ -6,19 +6,17 @@ namespace bitsoccer
 {
 	Ball::Ball()
 	{
-		m_row = 0;
-		m_col = 0;
 		m_currentBrick = 0L;
 	}
 
 	u32 Ball::GetRow() const
 	{
-		return m_row;
+		return m_currentBrick->GetRow();
 	}
 
 	u32 Ball::GetCol() const
 	{
-		return m_col;
+		return m_currentBrick->GetCol();		
 	}
 
 	void Ball::SetPosition(u32 row, u32 col, Board& board)
@@ -26,11 +24,11 @@ namespace bitsoccer
 		m_currentBrick = board.GetBrick(row,col);
 		m_neighbourBricks[Direction::North] = board.GetBrick(row  ,col+1);
 		m_neighbourBricks[Direction::East ] = board.GetBrick(row+1,col  );
-		if ( m_col > 0 )
+		if ( col > 0 )
 			m_neighbourBricks[Direction::South] = board.GetBrick(row  ,col-1);
 		else
 			m_neighbourBricks[Direction::South] = 0L;
-		if ( m_row > 0 )
+		if ( row > 0 )
 			m_neighbourBricks[Direction::West ] = board.GetBrick(row-1,col);
 		else
 			m_neighbourBricks[Direction::West ] = 0L;
@@ -53,7 +51,7 @@ namespace bitsoccer
 	{
 		u32 row;
 		u32 col;
-		board.GetPosition(row,col);
+		GetPosition(row,col);
 		u32 moveDirections = 0;
 		if ( m_neighbourBricks[Direction::North] != board.GetBrick(row, col+1) )
 			moveDirections |= MoveDirection::ToNorth;
@@ -61,10 +59,10 @@ namespace bitsoccer
 		if ( m_neighbourBricks[Direction::East ] != board.GetBrick(row+1, col  ) ) 
 			moveDirections |= MoveDirection::ToEast;
 		
-		if ( m_col > 0 && m_neighbourBricks[Direction::South] != board.GetBrick(row, col-1) )
+		if ( col > 0 && m_neighbourBricks[Direction::South] != board.GetBrick(row, col-1) )
 			moveDirections |= MoveDirection::ToSouth;
 	
-		if ( m_row > 0 && m_neighbourBricks[Direction::West ] != board.GetBrick(row-1, col) )
+		if ( row > 0 && m_neighbourBricks[Direction::West ] != board.GetBrick(row-1, col) )
 			moveDirections |= MoveDirection::ToWest;
 
 		return moveDirections;

@@ -29,10 +29,10 @@ namespace bitsoccer {
 			for ( u32 j = 0; j < numCols; ++j )
 			{
 				u32 firstColor = 0;
+				bool allColorsSame = true;
 				for ( u32 k = 0;  k < Direction::NumDirections; ++k )
 				{
 					u32 randomU32 = GetRandomValue(0, (u32)Color::Green);
-					bool allColorsSame = true;
 					if ( k == 0 )
 						firstColor = randomU32;
 					allColorsSame &= randomU32 == firstColor;
@@ -40,6 +40,9 @@ namespace bitsoccer {
 						randomU32 = (randomU32+1)%Direction::NumDirections;
 					Brick* b = board.GetBrick(i,j);
 					b->SetColor((Direction::Type)k, (Color::Type)randomU32);
+
+					if (b->IsGoal(Player::Blue) && k== 3 )
+						int hej = 0;
 					b->NotifyPosition(i,j);
 				}
 			}
