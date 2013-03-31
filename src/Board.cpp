@@ -1,9 +1,10 @@
 #include "Board.h"
-#include "Renderer.h"
 
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
+#include <memory.h>
 
 namespace bitsoccer
 {
@@ -21,8 +22,6 @@ namespace bitsoccer
 		glLoadIdentity();
 		int maxSize = m_width > m_height ? m_width : m_height;
 		float scale = 2.0f / (float)(maxSize+2);
-		float step = scale / 2.0f;
-		//glTranslatef(-1.0f, -1.0f, 0.0f);
 
 		glBegin(GL_TRIANGLES);
 		{
@@ -32,10 +31,8 @@ namespace bitsoccer
 				{
 					float posX = (w+1) * scale - 1.0f;
 					float posY = (h+1) * scale - 1.0f;
-					
-					glColor3f(posX*0.5f + 0.5f, posY*0.5f + 0.5f, 0.0f);
 
-					GetBrick(w, h)->Draw(posX, posY, scale);
+					GetBrick(w, h)->Draw(posX+scale*0.01f, posY, scale*0.98f);
 				}
 			}
 		}
@@ -76,7 +73,7 @@ namespace bitsoccer
 
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex)
 	{
-		return m_width*rowIndex + colIndex; 
+		return m_width*colIndex +rowIndex; 
 	}
 
 	void Board::Initialize()
@@ -87,9 +84,46 @@ namespace bitsoccer
 			for ( u32 j = 0; j < m_height; ++j)
 			{
 				u32 index = CalcIndex(i,j);
+				std::cout << index << std::endl;
 				m_bricks[index] = new Brick();
 			}
 		}
+
+
+		m_hitSurfaces = (Renderer::HitSurface*)malloc(sizeof(Renderer::HitSurface*) * 2 * (m_width + m_height));
+		int maxSize = m_width > m_height ? m_width : m_height;
+		float scale = 2.0f / (float)(maxSize+2);
+
+		// Upper buttons
+		for (u32 i = 0; i < m_width; ++i)
+		{			
+			int x, y, scaleX, scaleY;
+			Renderer::MapToScreen((float)(i+1) * scale - 1.0f, 1.0f - scale, x, y);
+			Renderer::MapToScreenScale(scale, scale, scaleX, scaleY);
+			m_hitSurfaces[i].startX = x;
+			m_hitSurfaces[i].startY = y;
+			m_hitSurfaces[i].width = scaleX;
+			m_hitSurfaces[i].height = scaleY;
+			m_hitSurfaces[i].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[i]);
+		}
+
+		// Lower buttons
+		for (u32 i = 0; i < m_width; ++i)
+		{			
+			int x, y, scaleX, scaleY;
+			Renderer::MapToScreen((float)(i+1) * scale - 1.0f, -1.0f, x, y);
+			Renderer::MapToScreenScale(scale, scale, scaleX, scaleY);
+			m_hitSurfaces[i+m_width].startX = x;
+			m_hitSurfaces[i+m_width].startY = y;
+			m_hitSurfaces[i+m_width].width = scaleX;
+			m_hitSurfaces[i+m_width].height = scaleY;
+			m_hitSurfaces[i+m_width].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[i+m_width]);
+		}
+
 		m_initialized = true; 
 	}
 

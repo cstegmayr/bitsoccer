@@ -66,42 +66,58 @@ namespace bitsoccer
 	void Brick::Draw(float posX, float posY, float size)
 	{
 		Vec3 colors[] = {
-			Vec3(1.0f, 0.0f, 0.0f), 
-			Vec3(0.0f, 0.0f, 1.0f), 
-			Vec3(0.0f, 1.0f, 0.0f), 
+			Vec3(0.7f, 0.0f, 0.0f), 
+			Vec3(0.2f, 0.2f, 0.8f), 
+			Vec3(0.0f, 0.6f, 0.0f), 
 			Vec3(0.7f, 0.0f, 0.0f), 
 			Vec3(0.0f, 0.0f, 0.7f)};
 
 		float halfSize = size / 2.0f;
+		float width = halfSize * 0.2f;
 		float centerX = posX + halfSize;
 		float centerY = posY + halfSize;
+
+		// Background lower
+		if (IsGoal(Player::Blue) || IsGoal(Player::Red))
+			glColor3f(0.3f, 0.3f, 0.3f);
+		else
+			glColor3f(0.8f, 0.8f, 0.8f);
+
+		glVertex2f(posX, posY);
+		glVertex2f(posX, posY+size);
+		glVertex2f(posX+size, posY);
+		
+		// Background upper
+		glVertex2f(posX+size, posY+size);
+		glVertex2f(posX+size, posY);
+		glVertex2f(posX, posY+size);
 
 		// TRI NORTH
 		Vec3 color = colors[m_colors[Direction::North]];
 		glColor3f(color.r, color.g, color.b);
 		glVertex2f(centerX, centerY);
-		glVertex2f(centerX-halfSize, centerY+halfSize);
-		glVertex2f(centerX+halfSize, centerY+halfSize);
+		glVertex2f(centerX+width, centerY+halfSize);
+		glVertex2f(centerX-width, centerY+halfSize);
 
 		// TRI EAST
 		color = colors[m_colors[Direction::East]];
 		glColor3f(color.r, color.g, color.b);
 		glVertex2f(centerX, centerY);
-		glVertex2f(centerX+halfSize, centerY+halfSize);
-		glVertex2f(centerX+halfSize, centerY-halfSize);
+		glVertex2f(centerX+halfSize, centerY+width);
+		glVertex2f(centerX+halfSize, centerY-width);
 
 		// TRI SOUTH
 		color = colors[m_colors[Direction::South]];
 		glColor3f(color.r, color.g, color.b);
 		glVertex2f(centerX, centerY);
-		glVertex2f(centerX+halfSize, centerY-halfSize);
-		glVertex2f(centerX-halfSize, centerY-halfSize);
+		glVertex2f(centerX+width, centerY-halfSize);
+		glVertex2f(centerX-width, centerY-halfSize);
 
 		// TRI WEST
 		color = colors[m_colors[Direction::West]];
 		glColor3f(color.r, color.g, color.b);
 		glVertex2f(centerX, centerY);
-		glVertex2f(centerX-halfSize, centerY-halfSize);
-		glVertex2f(centerX-halfSize, centerY+halfSize);
+		glVertex2f(centerX-halfSize, centerY+width);
+		glVertex2f(centerX-halfSize, centerY-width);
 	}
 }
