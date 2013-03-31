@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 #include <memory.h>
 
 namespace bitsoccer
@@ -72,7 +73,7 @@ namespace bitsoccer
 
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex)
 	{
-		return m_width*rowIndex + colIndex; 
+		return m_width*colIndex +rowIndex; 
 	}
 
 	void Board::Initialize()
@@ -83,6 +84,7 @@ namespace bitsoccer
 			for ( u32 j = 0; j < m_height; ++j)
 			{
 				u32 index = CalcIndex(i,j);
+				std::cout << index << std::endl;
 				m_bricks[index] = new Brick();
 			}
 		}
