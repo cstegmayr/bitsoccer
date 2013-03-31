@@ -3,7 +3,7 @@ require "tundra.syntax.glob"
 Build {
 	Configs = {
 		Config {
-			Name = "macosx-clang",
+			Name = "clang-osx",
 			DefaultOnHost = "macosx",
 			Tools = { "clang-osx" },
 		},
