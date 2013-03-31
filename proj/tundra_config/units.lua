@@ -14,7 +14,7 @@ local bit_soccer = Program {
 	},
 	-- Frameworks = {"Cocoa", "OpenGL"},
 	Libs = {
-	{"glfw", "GL", "GLU", "m"}},
+	{"glfw", "GL", "GLU", "m", "stdc++"}},
 }
 
 Default(bit_soccer)
