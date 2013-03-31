@@ -44,7 +44,7 @@ namespace bitsoccer
 		{ 
         // Definition of a goal is that all colors are the same.
 		// Player::Red == Color::Red and Player::Blue == Color::Blue
-			if ( m_colors[i] != player )
+			if ( m_colors[i] != (Color::Type)player )
 				return false; // If any of the colors differ from the player-color, this is no goal
 		}
 		// All colors are same as player color.
