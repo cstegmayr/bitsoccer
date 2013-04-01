@@ -9,6 +9,7 @@ namespace bitsoccer
 	{
 	public:
 		Brick();
+		~Brick();
 		void        SetColor( Direction::Type dir, Color::Type color );
 		Color::Type GetColor( Direction::Type );
 		bool        IsGoal( Player::Type );

@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 namespace bitsoccer
 {
@@ -9,7 +10,7 @@ namespace bitsoccer
 	{	
 		static int s_width = 600;
 		static int s_height = 600;
-		HitSurface* s_surfaces[128];
+		HitSurface* s_surfaces[256];
 		s32 s_numHitSurfaces;
 
 		void GLFWCALL reshape( int w, int h )
@@ -20,7 +21,7 @@ namespace bitsoccer
 
 			glMatrixMode( GL_PROJECTION );
 			glLoadIdentity();
-			glOrtho(0.0, (GLdouble)w, 0.0, (GLdouble)h, -1.0, 1.0);
+			glOrtho(0.0, (GLdouble)w, 0.0, (GLdouble)h, -64.0, 1.0);
 
 			glMatrixMode( GL_MODELVIEW );
 			glLoadIdentity();
@@ -83,6 +84,7 @@ namespace bitsoccer
 		
 		void RegisterHitSurface(HitSurface* surface)
 		{
+			assert(s_numHitSurfaces < 255);
 			s_surfaces[s_numHitSurfaces++] = surface;
 		}
 
@@ -129,6 +131,8 @@ namespace bitsoccer
 			glfwSetTime( 0.0 );
 
 			SetupView(s_width, s_height);
+
+			glEnable(GL_DEPTH_TEST);
 		}
 
 		bool IsRunning()
@@ -143,38 +147,30 @@ namespace bitsoccer
 		
 		void DrawCallback()
 		{
-			glFlush();
-			glfwSwapBuffers();
-			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
 			glBegin(GL_TRIANGLES);
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{
 				HitSurface* hs = s_surfaces[i];
-				float x, y, w, h;
-				MapFromScreen(hs->startX, hs->startY, x, y);
-				MapFromScreenScale(hs->width, hs->height, w, h);
-
-				if (hs->state == HitState::Released)
+				if (hs->state != HitState::Released)
 				{
-					glColor3f(1.0f, 1.0f, 0.0f);
-				}
-				else
-				{
-					glColor3f(1.0f, 0.0, 0.0);
-				}
-				
-				glVertex2f(x, y);
-				glVertex2f(x, y+h);
-				glVertex2f(x+w, y);
-				glVertex2f(x+w, y);
-				glVertex2f(x, y+h);
-				glVertex2f(x+w, y+h);
+					u32 x = hs->startX, y = hs->startY, w = hs->width, h = hs->height;
+					glColor3f(1.0f, 1.0, 1.0);
+					glVertex3i(x, y, 10);
+					glVertex3i(x, y+h, 10);
+					glVertex3i(x+w, y, 10);
+					glVertex3i(x+w, y, 10);
+					glVertex3i(x, y+h, 10);
+					glVertex3i(x+w, y+h, 10);
 
-				if (hs->state == HitState::Pressed)
-					hs->state = HitState::Released;
+					if (hs->state == HitState::Pressed)
+						hs->state = HitState::Released;
+				}
 			}
 			glEnd();
+
+			glFlush();
+			glfwSwapBuffers();
+			glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		}
 	}
 }
