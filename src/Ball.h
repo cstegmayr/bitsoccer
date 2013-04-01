@@ -17,6 +17,8 @@ namespace bitsoccer
 		// return possible directions to go
 		u32 GetMoveDirections(Board& board);
 
+		u32 GetSameColorDirections(Board& board);
+
 	private:
 		Brick* m_currentBrick;
 		Brick* m_neighbourBricks[Direction::NumDirections];

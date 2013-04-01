@@ -32,17 +32,13 @@ namespace bitsoccer
 
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
-				Brick* ballBrick = GetBrick( ball->GetCol(), ball->GetRow() );
-				MoveDirection::Type move = (MoveDirection::Type)ball->GetMoveDirections( *this );
+				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
+				u32 movableColorDirs = ball->GetSameColorDirections(*this);
 				if	( 
-					( move | MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() 
-					&& b->GetColor( Direction::South ) == ballBrick->GetColor( Direction::North ) )				     ||
-					( move | MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() 
-					&& b->GetColor( Direction::West ) == ballBrick->GetColor( Direction::East ) )				     ||
-					( move | MoveDirection::ToSouth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() 
-					&& b->GetColor( Direction::North ) == ballBrick->GetColor( Direction::South ) )				     ||
-					( move | MoveDirection::ToWest  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() 
-					&& b->GetColor( Direction::East ) == ballBrick->GetColor( Direction::West ) )				     
+					( movableColorDirs & MoveDirection::ToNorth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToEast  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToSouth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToWest  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() )   
 					)
 					brickType |= (u32)BrickMode::PossibleMove;
 				if ( b->IsGoal(Player::Red) )
@@ -186,9 +182,9 @@ namespace bitsoccer
 
 	Brick* Board::Push( Direction::Type dir, u32 row, u32 col, Brick* brick )
 	{
-		s32 rowIncrement = dir == Direction::East  ? 1 : ( dir == Direction::West  ? -1 : 0 );
-		s32 colIncrement = dir == Direction::North ? 1 : ( dir == Direction::South ? -1 : 0 );
-		u32 numIterations = (u32)abs( (s32)GetWidth()*rowIncrement + (s32)GetHeight()*colIncrement);
+		s32 rowIncrement = dir == Direction::North  ? 1 : ( dir == Direction::South  ? -1 : 0 );
+		s32 colIncrement = dir == Direction::East  ? 1 : ( dir == Direction::West ? -1 : 0 );
+		u32 numIterations = (u32)abs( (s32)GetWidth()*colIncrement + (s32)GetHeight()*rowIncrement);
 		for ( u32 i = 0; i < numIterations; ++i ) 
 		{			
 			u32 index = CalcIndex(row + rowIncrement*i,col + colIncrement*i);
