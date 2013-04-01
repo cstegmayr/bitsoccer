@@ -6,10 +6,16 @@
 namespace bitsoccer
 {
 	Brick::Brick()
+	: m_row(0)
+	, m_col(0)
+	, m_originX(0)
+	, m_originY(0)
 	{
 		// initialize everything green
 		for (int i = 0; i < Direction::NumDirections; ++i)
 			m_colors[i] = Color::Green;
+
+		m_hitSurface.state = HitState::Released;
 	}
 
 	void Brick::SetColor( Direction::Type dir, Color::Type color )
@@ -31,6 +37,9 @@ namespace bitsoccer
 	{
 		m_row = row;
 		m_col = col;
+
+		m_hitSurface.startX = m_col * GetSize() + m_originX;
+		m_hitSurface.startY = m_row * GetSize() + m_originY;
 	}
 
 	Color::Type Brick::GetColor( Direction::Type dir )

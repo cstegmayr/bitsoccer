@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "Renderer.h"
 
 namespace bitsoccer
 {
@@ -16,11 +17,18 @@ namespace bitsoccer
 		void		Draw(float posX, float posY, float size);
 		void		NotifyPosition( u32 row, u32 col );
 		u32			GetRow() const;	
-		u32			GetCol() const;	
+		u32			GetCol() const;
+		/// Sets the origin of the board, so bricks know where to render.
+		void		SetBoardOrigin(int x, int y) { m_originX = x; m_originY = y;}
+		/// The size in pixels of the brick
+		int			GetSize() const { return 32; }
 
 	private:
+		Renderer::HitSurface m_hitSurface;
 		Color::Type m_colors[Direction::NumDirections];
 		u32 m_row;
 		u32 m_col;
+		u32 m_originX;
+		u32 m_originY;
 	};
 }
