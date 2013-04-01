@@ -19,7 +19,7 @@ namespace bitsoccer
 	}
 
 	void Board::Draw()
-	{		
+	{
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glLoadIdentity();

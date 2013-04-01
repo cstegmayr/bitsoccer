@@ -32,37 +32,25 @@ namespace bitsoccer
 		{
 			screenX = (int)x;
 			screenY = (int)y;
-			/*
-			x = x*0.5f + 0.5f;
-			y = -y*0.5f + 0.5f;
-			screenX = (int)(x * (float)s_width + 0.5f);
-			screenY = (int)(y * (float)s_heigth + 0.5f);
-			*/
 		}
 
 		void MapFromScreen(int screenX, int screenY, float& x, float& y)
 		{
 			x = (float)screenX;
 			y = (float)screenY;
-			/*
-			x = (float)screenX / (float)s_width;
-			y = (float)screenY / (float)s_heigth;
-			x = x*2.0f - 1.0f;
-			y = 1.0f - y*2.0f;
-			*/
 		}
 
 		
 		void MapToScreenScale(float width, float height, int& screenWidth, int& screenHeight)
 		{
-			screenWidth = (int)width;//(int)(width * (float)s_width + 0.5f);
-			screenHeight = (int)height;//(int)(height * (float)s_heigth + 0.5f);
+			screenWidth = (int)width;
+			screenHeight = (int)height;
 		}
 
 		void MapFromScreenScale(int screenWidth, int screenHeight, float& width, float& height)
 		{
-			width = (float)screenWidth;//(float)screenWidth / (float)s_width;
-			height = (float)screenHeight;//(float)screenHeight / (float)s_heigth;
+			width = (float)screenWidth;
+			height = (float)screenHeight;
 		}
 
 		bool Inside(HitSurface* hs, int x, int y)
@@ -78,7 +66,11 @@ namespace bitsoccer
 			int x, y;
 			glfwGetMousePos(&x, &y);
 
+			printf("Mouse x: %d y: %d transformed y: ", x, y);
+
 			y = s_width - y;
+
+			printf("%d\n", y);
 
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{

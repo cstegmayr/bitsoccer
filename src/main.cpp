@@ -16,7 +16,7 @@ int main(int argc, const char** argv)
 	{
 		g.Draw();
 		Renderer::DrawCallback();
-		glfwSleep(33);
+		glfwSleep(1.0/60.0);
 	} while (Renderer::IsRunning());
 
 
