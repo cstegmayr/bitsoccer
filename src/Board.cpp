@@ -150,20 +150,35 @@ namespace bitsoccer
 		}
 	}
 
-	void Board::Initialize(u32 x, u32 y)
+	void Board::SetPosition(u32 x, u32 y)
 	{
 		m_posX = x; m_posY = y;
-		m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
 		for (u32 i = 0; i < m_height; ++i)
 		{
 			for ( u32 j = 0; j < m_width; ++j)
 			{
 				u32 index = CalcIndex(i,j);
-				m_bricks[index] = new Brick();
 				m_bricks[index]->SetBoardOrigin(x, y);
 			}
 		}
+	}
 
+	void Board::Initialize(u32 x, u32 y)
+	{
+		if (m_bricks == 0)
+		{
+			m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
+			for (u32 i = 0; i < m_height; ++i)
+			{
+				for ( u32 j = 0; j < m_width; ++j)
+				{
+					u32 index = CalcIndex(i,j);
+					m_bricks[index] = new Brick();
+				}
+			}
+		}
+
+		SetPosition(x, y);
 		SetupHitSurfaces();
 
 		m_initialized = true; 
@@ -195,7 +210,19 @@ namespace bitsoccer
 	}
 	
 	Board::~Board()
-	{
+	{		
+		if (m_bricks)
+		{
+			for (u32 i = 0; i < m_height; ++i)
+			{
+				for ( u32 j = 0; j < m_width; ++j)
+				{
+					u32 index = CalcIndex(i,j);
+					delete m_bricks[index];
+					m_bricks[index] = 0;
+				}
+			}
+		}
 		free(m_bricks);
 		free(m_hitSurfaces);
 	}
