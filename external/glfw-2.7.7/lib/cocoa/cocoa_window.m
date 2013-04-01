@@ -699,6 +699,7 @@ int  _glfwPlatformOpenWindow( int width, int height,
     // Don't use accumulation buffer support; it's not accelerated
     // Aux buffers probably aren't accelerated either
 
+    #if MAC_OS_X_VERSION_MAX_ALLOWED <= 1060
     CFDictionaryRef fullscreenMode = NULL;
     if( wndconfig->mode == GLFW_FULLSCREEN )
     {
@@ -718,7 +719,10 @@ int  _glfwPlatformOpenWindow( int width, int height,
 
         width = [[(id)fullscreenMode objectForKey:(id)kCGDisplayWidth] intValue];
         height = [[(id)fullscreenMode objectForKey:(id)kCGDisplayHeight] intValue];
+        //width = CGDisplayModeGetWidth(kCGDisplayModeIsSafeForHardware);
+        //height = CGDisplayModeGetHeight(kCGDisplayModeIsSafeForHardware);
     }
+    #endif
 
     unsigned int styleMask = 0;
     if( wndconfig->mode == GLFW_WINDOW )
@@ -750,6 +754,7 @@ int  _glfwPlatformOpenWindow( int width, int height,
         [_glfwWin.window setRestorable:NO];
     }
 
+    #if MAC_OS_X_VERSION_MAX_ALLOWED <= 1060
     if( wndconfig->mode == GLFW_FULLSCREEN )
     {
         _glfwLibrary.originalMode = (NSDictionary*)
@@ -758,6 +763,7 @@ int  _glfwPlatformOpenWindow( int width, int height,
         CGCaptureAllDisplays();
         CGDisplaySwitchToMode( CGMainDisplayID(), fullscreenMode );
     }
+    #endif
 
     unsigned int attribute_count = 0;
 #define ADD_ATTR(x) attributes[attribute_count++] = x
@@ -869,6 +875,7 @@ void _glfwPlatformCloseWindow( void )
 {
     [_glfwWin.window orderOut:nil];
 
+    #if MAC_OS_X_VERSION_MAX_ALLOWED <= 1060
     if( _glfwWin.fullscreen )
     {
         [[_glfwWin.window contentView] exitFullScreenModeWithOptions:nil];
@@ -876,6 +883,7 @@ void _glfwPlatformCloseWindow( void )
                                (CFDictionaryRef)_glfwLibrary.originalMode );
         CGReleaseAllDisplays();
     }
+    #endif
 
     [_glfwWin.pixelFormat release];
     _glfwWin.pixelFormat = nil;
