@@ -204,6 +204,18 @@ namespace bitsoccer
 		}
 		return brick;
 	}
+
+	Direction::Type Board::GetDirectionFromIndex(u32 index)
+	{
+		if (index < m_width)
+			return Direction::North;
+		else if (index < 2 * m_width)
+			return Direction::South;
+		else if (index < (2*m_width + m_height))
+			return Direction::East;
+		else
+			return Direction::West;
+	}
 	
 	Board::~Board()
 	{		
