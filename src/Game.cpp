@@ -21,6 +21,7 @@ namespace bitsoccer
 	{
 		delete m_mixer;
 		delete m_ball;
+		delete m_looseBrick;
 	}
 
 	PlayState::Type Game::GetState() const

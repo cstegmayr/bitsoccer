@@ -116,31 +116,35 @@ namespace bitsoccer
 		u32 posX = m_currentBrick->GetX();
 		u32 posY = m_currentBrick->GetY();
 
-		float centerX = (float)(posX + brickSize / 2);
-		float centerY = (float)(posY + brickSize / 2);
+		u32 centerX = posX + brickSize / 2;
+		u32 centerY = posY + brickSize / 2;
 		float radius = (float)(brickSize / 4);
 
 		double currentTimeMod = 0.0;
-		double dummy = 2.0;
-		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 2.0, &dummy) * M_PI)) * 0.7f;
+		double dummy = 4.0;
+		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.5 + 0.1;
+		//currentTimeMod = modf(glfwGetTime(), &dummy);
 
-		u32 numSeg = 8;
-		float inc = 1.0f / (float)numSeg;
+		u32 numSeg = 9;
+		float inc = 1.0f / (float)(numSeg-1);
 		for (int i = 0; i < numSeg; ++i)
 		{
 			float p0 = (float)i * inc;
-			float x0 = cosf(p0*M_PI*2.0) * radius + centerX;
-			float y0 = sinf(p0*M_PI*2.0) * radius + centerY;
+			u32 x0 = (u32)(cosf(p0*M_PI*2.0) * radius + 0.5f) + centerX;
+			u32 y0 = (u32)(sinf(p0*M_PI*2.0) * radius + 0.5f) + centerY;
 			float p1 = (float)(i+1) * inc;
-			float x1 = cosf(p1*M_PI*2.0) * radius + centerX;
-			float y1 = sinf(p1*M_PI*2.0) * radius + centerY;
+			u32 x1 = (u32)(cosf(p1*M_PI*2.0) * radius + 0.5f) + centerX;
+			u32 y1 = (u32)(sinf(p1*M_PI*2.0) * radius + 0.5f) + centerY;
 
-			glColor3f(1.0f, 1.0f, 1.0f);
-			glVertex2f(centerX, centerY);
-			glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
-			glVertex2f(x0, y0);
-			glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
-			glVertex2f(x1, y1);
+			//if (currentTimeMod > p0 && currentTimeMod < p1)
+			{
+				glColor3f(1.0f, 1.0f, 1.0f);
+				glVertex3i(centerX, centerY, 4);
+				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
+				glVertex3i(x1, y1, 4);
+				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
+				glVertex3i(x0, y0, 4);
+			}
 		}
 
 	}

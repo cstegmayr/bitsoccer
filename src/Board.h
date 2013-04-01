@@ -21,6 +21,7 @@ namespace bitsoccer
 		u32 GetWidth();
 		bool SetWidth(u32 width);
 		u32 GetHeight();
+		void SetPosition(u32 x, u32 y);
 		u32 GetXPosition() const { return m_posX; }
 		u32 GetYPosition() const { return m_posY; }
 		bool SetHeight(u32 height);
@@ -29,6 +30,9 @@ namespace bitsoccer
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 		u32 GetNumSurroundingHitSurfaces() const;
 		Renderer::HitSurface& GetHitSurface( u32 index );
+		// Hit surface helpers
+		Direction::Type GetDirectionFromIndex(u32 index);
+
 		void Draw( Ball* ball );
 		~Board();
 

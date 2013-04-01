@@ -16,6 +16,15 @@ namespace bitsoccer
 			m_colors[i] = Color::Green;
 
 		m_hitSurface.state = HitState::Released;
+		m_hitSurface.width = GetSize();
+		m_hitSurface.height = GetSize();
+
+		Renderer::RegisterHitSurface(&m_hitSurface);
+	}
+
+	Brick::~Brick()
+	{		
+		Renderer::UnregisterHitSurface(&m_hitSurface);
 	}
 
 	void Brick::SetColor( Direction::Type dir, Color::Type color )
@@ -28,8 +37,8 @@ namespace bitsoccer
 		m_row = row;
 		m_col = col;
 
-		m_hitSurface.startX = m_col * GetSize() + m_originX;
-		m_hitSurface.startY = m_row * GetSize() + m_originY;
+		m_hitSurface.startX = GetX();
+		m_hitSurface.startY = GetY();
 	}
 
 	Color::Type Brick::GetColor( Direction::Type dir )
@@ -95,41 +104,41 @@ namespace bitsoccer
 			brickColor = brickColor * Vec3( 1.9f, 0.05f, 1.9f );
 
 		glColor3f(brickColor.r, brickColor.g, brickColor.b );
-		glVertex2i(posX, posY);
-		glVertex2i(posX, posY+size);
-		glVertex2i(posX+size, posY);
+		glVertex3i(posX, posY, 0);
+		glVertex3i(posX, posY+size, 0);
+		glVertex3i(posX+size, posY, 0);
 		
 		// Background upper
-		glVertex2i(posX+size, posY+size);
-		glVertex2i(posX+size, posY);
-		glVertex2i(posX, posY+size);
+		glVertex3i(posX+size, posY+size, 0);
+		glVertex3i(posX+size, posY, 0);
+		glVertex3i(posX, posY+size, 0);
 
 		// TRI NORTH
 		Vec3 color = colors[m_colors[Direction::North]];
 		glColor3f(color.r, color.g, color.b);
-		glVertex2i(centerX, centerY);
-		glVertex2i(centerX+width, centerY+halfSize);
-		glVertex2i(centerX-width, centerY+halfSize);
+		glVertex3i(centerX, centerY, 1);
+		glVertex3i(centerX+width, centerY+halfSize, 1);
+		glVertex3i(centerX-width, centerY+halfSize, 1);
 
 		// TRI EAST
 		color = colors[m_colors[Direction::East]];
 		glColor3f(color.r, color.g, color.b);
-		glVertex2i(centerX, centerY);
-		glVertex2i(centerX+halfSize, centerY+width);
-		glVertex2i(centerX+halfSize, centerY-width);
+		glVertex3i(centerX, centerY, 1);
+		glVertex3i(centerX+halfSize, centerY+width, 1);
+		glVertex3i(centerX+halfSize, centerY-width, 1);
 
 		// TRI SOUTH
 		color = colors[m_colors[Direction::South]];
 		glColor3f(color.r, color.g, color.b);
-		glVertex2i(centerX, centerY);
-		glVertex2i(centerX+width, centerY-halfSize);
-		glVertex2i(centerX-width, centerY-halfSize);
+		glVertex3i(centerX, centerY, 1);
+		glVertex3i(centerX+width, centerY-halfSize, 1);
+		glVertex3i(centerX-width, centerY-halfSize, 1);
 
 		// TRI WEST
 		color = colors[m_colors[Direction::West]];
 		glColor3f(color.r, color.g, color.b);
-		glVertex2i(centerX, centerY);
-		glVertex2i(centerX-halfSize, centerY+width);
-		glVertex2i(centerX-halfSize, centerY-width);
+		glVertex3i(centerX, centerY, 1);
+		glVertex3i(centerX-halfSize, centerY+width, 1);
+		glVertex3i(centerX-halfSize, centerY-width, 1);
 	}
 }
