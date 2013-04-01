@@ -60,7 +60,7 @@ namespace bitsoccer
 			s32 foundSurface = -1;
 			for ( u32 i = 0; i < m_board.GetNumSurroundingHitSurfaces(); ++i )
 			{
-				if ( m_board.GetHitSurface(i).state == HitState::Released )
+				if ( m_board.GetHitSurface(i).state == HitState::Pressed )
 				{
 					foundSurface = i;
 					break;
@@ -72,7 +72,7 @@ namespace bitsoccer
 				Direction::Type dir = m_board.GetDirectionFromIndex((u32)foundSurface);
 				// calc index on board
 				u32 row, col;
-				m_board.GetRowColumnFromIndex(row, col);
+				m_board.GetRowColumnFromIndex((u32)foundSurface,row,col);
 
 				// push the board
 				PushBoard( dir, row, col );
@@ -88,11 +88,12 @@ namespace bitsoccer
 		}
 		else
 		{
-			for ( u32 col = 0; col < m_board.getWidth(); ++col )
+			for ( u32 col = 0; col < m_board.GetWidth(); ++col )
 			{
 				for ( u32 row = 0; row < m_board.GetHeight(); ++row )
+				{}
 
-				if ( m_board.GetBrick(row,col). )
+				//if ( m_board.GetBrick(row,col). )
 			}
 		
 		}
@@ -107,7 +108,8 @@ namespace bitsoccer
 
 		glBegin(GL_TRIANGLES);
 		{
-			m_board.Draw(m_ball);
+			Color::Type playerColor = m_state == PlayState::PlayerRedPush ? Color::Red : ( m_state == PlayState::PlayerBluePush ? Color::Blue : Color::Green);
+			m_board.Draw(m_ball, (MoveDirection::Type)m_ball->GetMovableColorDirections( m_board, playerColor ) );
 			m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2);
 			m_looseBrick->Draw( BrickMode::Normal );
 			m_ball->Draw( m_board );

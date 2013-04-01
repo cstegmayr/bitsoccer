@@ -28,12 +28,15 @@ namespace bitsoccer
 		Brick* GetBrick(u32 row, u32 col);
 		u32 CalcIndex(u32 i, u32 j);
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
+
 		u32 GetNumSurroundingHitSurfaces() const;
 		Renderer::HitSurface& GetHitSurface( u32 index );
-		// Hit surface helpers
-		Direction::Type GetDirectionFromIndex(u32 index);
 
-		void Draw( Ball* ball );
+		/// Hit surface helpers
+		Direction::Type GetDirectionFromIndex(u32 hitSurfaceIndex);
+		void GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col);
+
+		void Draw( Ball* ball, MoveDirection::Type movableColorDirs );
 		~Board();
 
 	private:

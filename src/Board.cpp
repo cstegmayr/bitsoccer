@@ -22,7 +22,7 @@ namespace bitsoccer
 	{
 	}
 
-	void Board::Draw( Ball* ball )
+	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs )
 	{	
 		for (u32 w = 0; w < m_width; ++w)
 		{
@@ -31,7 +31,7 @@ namespace bitsoccer
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
 				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
-				MoveDirection::Type movableColorDirs = (MoveDirection::Type)ball->GetMovableColorDirections(*this);
+				
 				if	( 
 					( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
 					( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
@@ -216,14 +216,40 @@ namespace bitsoccer
 
 	Direction::Type Board::GetDirectionFromIndex(u32 index)
 	{
-		if (index < m_width)
+		if (index < m_width)						// Lower
 			return Direction::North;
-		else if (index < 2 * m_width)
+		else if (index < 2 * m_width)				// Upper
 			return Direction::South;
-		else if (index < (2*m_width + m_height))
+		else if (index < (2*m_width + m_height))	// Left
 			return Direction::East;
-		else
+		else										// Right
 			return Direction::West;
+	}
+
+
+	void Board::GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col)
+	{
+		u32 index = hitSurfaceIndex;
+		if (index < m_width)						// Lower
+		{
+			row = 0;
+			col = index % m_width;
+		}
+		else if (index < 2 * m_width)				// Upper
+		{
+			row = m_height - 1;
+			col = (index - m_width) % m_width;
+		}
+		else if (index < (2*m_width + m_height))	// Left
+		{
+			col = 0;
+			row = (index - 2 * m_width) % m_height;
+		}
+		else										// Right
+		{
+			col = m_width - 1;
+			row = (index - 2*m_width - m_height) % m_height;
+		}
 	}
 	
 	Board::~Board()
