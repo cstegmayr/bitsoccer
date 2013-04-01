@@ -154,7 +154,7 @@ namespace bitsoccer
 				if (hs->state != HitState::Released)
 				{
 					u32 x = hs->startX, y = hs->startY, w = hs->width, h = hs->height;
-					glColor3f(1.0f, 1.0, 1.0);
+					glColor4f(1.0f, 1.0, 1.0, 0.5f);
 					glVertex3i(x, y, 10);
 					glVertex3i(x, y+h, 10);
 					glVertex3i(x+w, y, 10);
