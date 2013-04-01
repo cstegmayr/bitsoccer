@@ -9,14 +9,15 @@ namespace bitsoccer
 		
 		enum
 		{
-			kBoardWidth = 8,
-			kBoardHeight = 12
+			kBoardWidth = 9,
+			kBoardHeight = 13
 		};
 	public:
 		Board();
 		void Initialize();
-		u32 GetSize();
+		u32 GetNumBricks();
 		u32 GetWidth();
+		u32 GetBrickWidth() const;
 		bool SetWidth(u32 width);
 		u32 GetHeight();
 		bool SetHeight(u32 height);
@@ -31,6 +32,7 @@ namespace bitsoccer
 		void SetupHitSurfaces();
 
 		bool m_initialized;
+		u32 m_brickWidth;
 		u32 m_width;
 		u32 m_height;
 		Brick** m_bricks;

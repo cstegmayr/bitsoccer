@@ -19,5 +19,7 @@ namespace bitsoccer
 		MixerBase* m_mixer;
 		Ball* m_ball;
 		Brick* m_looseBrick;
+		PlayState::Type m_state;
+		u32 m_animationCounter;
 	};
 }

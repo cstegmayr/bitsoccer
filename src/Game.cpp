@@ -8,6 +8,8 @@ namespace bitsoccer
 	, m_mixer(new MixerRandom())
 	, m_ball(new Ball())
 	, m_looseBrick(new Brick())
+	, m_state(PlayState::PlayerRedPush)
+	, m_animationCounter(0)
 	{
 		m_looseBrick->SetColor(Direction::North,Color::Green);
 		m_looseBrick->SetColor(Direction::East ,Color::Red);
@@ -40,7 +42,18 @@ namespace bitsoccer
 
 	void Game::Draw()
 	{
-		m_board.Draw();
+			
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+
+		glBegin(GL_TRIANGLES);
+		{
+			m_board.Draw();
+			m_looseBrick->Draw((m_board.GetWidth()+3)*m_board.GetBrickWidth(), 0.0f,m_board.GetBrickWidth()*1.0f-2.0f);
+		}
+		glEnd();
+		glPopMatrix();
 	}
 
 

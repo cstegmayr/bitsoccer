@@ -91,5 +91,16 @@ namespace bitsoccer
 		Released
 	};
 	}
+	
+	namespace PlayState
+	{
+	enum Type 
+	{
+		PlayerRedPush,
+		PlayerRedMove,
+		PlayerBluePush,
+		PlayerBlueMove
+	};
+	}
 }
 
