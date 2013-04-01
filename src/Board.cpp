@@ -12,9 +12,10 @@ namespace bitsoccer
 {
 	Board::Board()
 		: m_initialized(false)
-		, m_brickWidth(32+2)
 		, m_width(kBoardWidth)
 		, m_height(kBoardHeight)
+		, m_posX(0)
+		, m_posY(0)
 		, m_bricks(0)
 		, m_hitSurfaces(0)
 
@@ -27,9 +28,6 @@ namespace bitsoccer
 		{
 			for (u32 h = 0; h < m_height; ++h)
 			{
-				float posX = (w+1) * m_brickWidth;
-				float posY = (h+1) * m_brickWidth;
-
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
 				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
@@ -45,7 +43,7 @@ namespace bitsoccer
 					brickType |= BrickMode::RedGoal;
 				if ( b->IsGoal(Player::Blue) )
 					brickType |= BrickMode::BlueGoal;
-				b->Draw( posX+1.0f, posY, m_brickWidth-2.0f, BrickMode::Type(brickType) );
+				b->Draw( (BrickMode::Type)brickType );
 			}
 		}
 	}
@@ -80,11 +78,6 @@ namespace bitsoccer
 		return true;
 	}
 
-	u32 Board::GetBrickWidth() const
-	{
-		return m_brickWidth;
-	}
-
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex)
 	{
 		return m_width*rowIndex + colIndex; 
@@ -93,18 +86,16 @@ namespace bitsoccer
 	void Board::SetupHitSurfaces()
 	{
 		m_hitSurfaces = (Renderer::HitSurface*)malloc(sizeof(Renderer::HitSurface) * 2 * (m_width + m_height));
-		int maxSize = m_width > m_height ? m_width : m_height;
-		
-
 		int currentSurface = 0;
+		u32 brickSize = Brick::GetSize();
 
 		// Lower buttons
 		for (u32 i = 0; i < m_width; ++i)
 		{
-			m_hitSurfaces[currentSurface].startX = (i+1)*m_brickWidth+1;
-			m_hitSurfaces[currentSurface].startY = 0;
-			m_hitSurfaces[currentSurface].width = m_brickWidth-2;
-			m_hitSurfaces[currentSurface].height = m_brickWidth-2;
+			m_hitSurfaces[currentSurface].startX = i * (brickSize+Brick::GetMargin()) + m_posX;
+			m_hitSurfaces[currentSurface].startY = -(brickSize+Brick::GetMargin()) + m_posY;
+			m_hitSurfaces[currentSurface].width = brickSize;
+			m_hitSurfaces[currentSurface].height = brickSize;
 			m_hitSurfaces[currentSurface].state = HitState::Released;
 
 			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
@@ -115,10 +106,10 @@ namespace bitsoccer
 		// Upper buttons
 		for (u32 i = 0; i < m_width; ++i)
 		{
-			m_hitSurfaces[currentSurface].startX = (i+1) * m_brickWidth+1;
-			m_hitSurfaces[currentSurface].startY = (m_height+1) * m_brickWidth;
-			m_hitSurfaces[currentSurface].width = m_brickWidth-2;
-			m_hitSurfaces[currentSurface].height = m_brickWidth-2;
+			m_hitSurfaces[currentSurface].startX = i * (brickSize+Brick::GetMargin()) + m_posX;
+			m_hitSurfaces[currentSurface].startY = (m_height) * (brickSize+Brick::GetMargin()) + m_posY;
+			m_hitSurfaces[currentSurface].width = brickSize;
+			m_hitSurfaces[currentSurface].height = brickSize;
 			m_hitSurfaces[currentSurface].state = HitState::Released;
 
 			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
@@ -129,10 +120,10 @@ namespace bitsoccer
 		// Left buttons
 		for (u32 i = 0; i < m_height; ++i)
 		{
-			m_hitSurfaces[currentSurface].startX = 1;
-			m_hitSurfaces[currentSurface].startY = (i+1) * m_brickWidth;
-			m_hitSurfaces[currentSurface].width = m_brickWidth-2;
-			m_hitSurfaces[currentSurface].height = m_brickWidth-2;
+			m_hitSurfaces[currentSurface].startX = -(brickSize+Brick::GetMargin()) + m_posX;
+			m_hitSurfaces[currentSurface].startY = i * (brickSize+Brick::GetMargin()) + m_posY;
+			m_hitSurfaces[currentSurface].width = brickSize;
+			m_hitSurfaces[currentSurface].height = brickSize;
 			m_hitSurfaces[currentSurface].state = HitState::Released;
 
 			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
@@ -143,10 +134,10 @@ namespace bitsoccer
 		// Right buttons
 		for (u32 i = 0; i < m_height; ++i)
 		{
-			m_hitSurfaces[currentSurface].startX = (m_width+1) * m_brickWidth+1;
-			m_hitSurfaces[currentSurface].startY = (i+1) * m_brickWidth;
-			m_hitSurfaces[currentSurface].width = m_brickWidth-2;
-			m_hitSurfaces[currentSurface].height = m_brickWidth-2;
+			m_hitSurfaces[currentSurface].startX = m_width * (brickSize+Brick::GetMargin()) + m_posX;
+			m_hitSurfaces[currentSurface].startY = i * (brickSize+Brick::GetMargin()) + m_posY;
+			m_hitSurfaces[currentSurface].width = brickSize;
+			m_hitSurfaces[currentSurface].height = brickSize;
 			m_hitSurfaces[currentSurface].state = HitState::Released;
 
 			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
@@ -155,8 +146,9 @@ namespace bitsoccer
 		}
 	}
 
-	void Board::Initialize()
+	void Board::Initialize(u32 x, u32 y)
 	{
+		m_posX = x; m_posY = y;
 		m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
 		for (u32 i = 0; i < m_height; ++i)
 		{
@@ -164,6 +156,7 @@ namespace bitsoccer
 			{
 				u32 index = CalcIndex(i,j);
 				m_bricks[index] = new Brick();
+				m_bricks[index]->SetBoardOrigin(x, y);
 			}
 		}
 

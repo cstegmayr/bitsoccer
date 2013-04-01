@@ -2,6 +2,10 @@
 #include "Board.h"
 #include "Brick.h"
 
+#include <stdio.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace bitsoccer
 {
 	Ball::Ball()
@@ -108,20 +112,36 @@ namespace bitsoccer
 
 	void Ball::Draw( Board& board )
 	{
-		float brickWidth = board.GetBrickWidth();
-		float radius = brickWidth * 0.3f;
-		float posX = (m_currentBrick->GetCol() + 1.0f ) * brickWidth;
-		float posY = (m_currentBrick->GetRow() + 1.0f ) * brickWidth;
+		u32 brickSize = Brick::GetSize();
+		u32 posX = m_currentBrick->GetX();
+		u32 posY = m_currentBrick->GetY();
 
-		float centerX = posX + brickWidth*0.5f;
-		float centerY = posY + brickWidth*0.5f;
-		glColor3f(0.0f, 0.0f, 0.0f );
+		float centerX = (float)(posX + brickSize / 2);
+		float centerY = (float)(posY + brickSize / 2);
+		float radius = (float)(brickSize / 4);
 
-		// TRI NORTH
-		glVertex2f(centerX, centerY);
-		glVertex2f(centerX+radius, centerY+radius);
-		glVertex2f(centerX-radius, centerY+radius);
+		double currentTimeMod = 0.0;
+		double dummy = 2.0;
+		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 2.0, &dummy) * M_PI)) * 0.7f;
 
+		u32 numSeg = 8;
+		float inc = 1.0f / (float)numSeg;
+		for (int i = 0; i < numSeg; ++i)
+		{
+			float p0 = (float)i * inc;
+			float x0 = cosf(p0*M_PI*2.0) * radius + centerX;
+			float y0 = sinf(p0*M_PI*2.0) * radius + centerY;
+			float p1 = (float)(i+1) * inc;
+			float x1 = cosf(p1*M_PI*2.0) * radius + centerX;
+			float y1 = sinf(p1*M_PI*2.0) * radius + centerY;
+
+			glColor3f(1.0f, 1.0f, 1.0f);
+			glVertex2f(centerX, centerY);
+			glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
+			glVertex2f(x0, y0);
+			glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
+			glVertex2f(x1, y1);
+		}
 
 	}
 }

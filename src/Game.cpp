@@ -35,7 +35,8 @@ namespace bitsoccer
 
 	void Game::Initialize()
 	{
-		m_board.Initialize();
+		m_board.Initialize(64, 64);
+		m_looseBrick->SetBoardOrigin(64, 64);
 		m_mixer->Mix(m_board);
 		m_ball->SetPosition(m_board.GetWidth()/2, m_board.GetHeight()/2, m_board);
 	}
@@ -60,7 +61,8 @@ namespace bitsoccer
 		glBegin(GL_TRIANGLES);
 		{
 			m_board.Draw(m_ball);
-			m_looseBrick->Draw( ( m_board.GetWidth() + 3 ) * m_board.GetBrickWidth(), 0.0f, m_board.GetBrickWidth() * 1.0f - 2.0f, BrickMode::Normal );
+			m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2);
+			m_looseBrick->Draw( BrickMode::Normal );
 			m_ball->Draw( m_board );
 		}
 		glEnd();

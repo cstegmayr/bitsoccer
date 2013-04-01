@@ -16,12 +16,13 @@ namespace bitsoccer
 		};
 	public:
 		Board();
-		void Initialize();
+		void Initialize(u32 x, u32 y);
 		u32 GetNumBricks();
 		u32 GetWidth();
-		u32 GetBrickWidth() const;
 		bool SetWidth(u32 width);
 		u32 GetHeight();
+		u32 GetXPosition() const { return m_posX; }
+		u32 GetYPosition() const { return m_posY; }
 		bool SetHeight(u32 height);
 		Brick* GetBrick(u32 row, u32 col);
 		u32 CalcIndex(u32 i, u32 j);
@@ -34,9 +35,10 @@ namespace bitsoccer
 		void SetupHitSurfaces();
 
 		bool m_initialized;
-		u32 m_brickWidth;
 		u32 m_width;
 		u32 m_height;
+		u32 m_posX;
+		u32 m_posY;
 		Brick** m_bricks;
 		Renderer::HitSurface* m_hitSurfaces;
 		
