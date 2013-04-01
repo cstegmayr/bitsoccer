@@ -46,7 +46,7 @@ namespace bitsoccer
 	{
 		m_looseBrick = m_board.Push(dir,row,col,m_looseBrick);
 		// returns which directions that are availible to move to
-		u32 movableDirections = m_ball->GetMoveDirections(m_board);
+		u32 movableDirections = m_ball->GetChangedDirections(m_board);
 
 		return movableDirections;
 

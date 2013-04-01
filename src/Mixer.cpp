@@ -8,7 +8,7 @@
 namespace bitsoccer {
 	MixerRandom::MixerRandom()
 	{
-		srand(0); //srand((u32)time(NULL));
+		srand(1); //srand((u32)time(NULL));
 	}
 	
 	u32 GetRandomValue(u32 min, u32 max)
