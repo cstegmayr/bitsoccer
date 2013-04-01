@@ -20,7 +20,9 @@ namespace bitsoccer
 		void MapFromScreenScale(int screenWidth, int screenHeight, float& width, float& height);
 		void MapFromScreen(int screenX, int screenY, float& x, float& y);
 		void Initialize(int argc, const char** argv);
+
 		void RegisterHitSurface(HitSurface* surface);
+		void UnregisterHitSurface(HitSurface* surface);
 
 		void DrawCallback();
 		void Terminate();

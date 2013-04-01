@@ -7,16 +7,15 @@ namespace bitsoccer
 {
 	namespace Renderer
 	{	
-		static int s_width = 800;
-		static int s_heigth = 800;
+		static int s_width = 600;
+		static int s_height = 600;
 		HitSurface* s_surfaces[128];
 		s32 s_numHitSurfaces;
 
 		void GLFWCALL reshape( int w, int h )
 		{
-			int minSize = w < h ? w : h;
 			s_width = w;
-			s_heigth = h;
+			s_height = h;
 			glViewport( 0, 0, (GLsizei)w, (GLsizei)h );
 
 			glMatrixMode( GL_PROJECTION );
@@ -66,18 +65,18 @@ namespace bitsoccer
 			int x, y;
 			glfwGetMousePos(&x, &y);
 
-			printf("Mouse x: %d y: %d transformed y: ", x, y);
-
-			y = s_width - y;
-
-			printf("%d\n", y);
+			y = s_height - y;
 
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{
 				HitSurface* hs = s_surfaces[i];
-				if (Inside(hs, x, y))
+				if (action != GLFW_PRESS)
+				{
+					hs->state = hs->state == HitState::Hold ? HitState::Pressed : HitState::Released;
+				}
+				else if (Inside(hs, x, y))
 				{					
-					hs->state = action == GLFW_PRESS ? HitState::Hold : (hs->state == HitState::Hold ? HitState::Pressed : HitState::Released);
+					hs->state = HitState::Hold;
 				}
 			}
 		}
@@ -85,6 +84,18 @@ namespace bitsoccer
 		void RegisterHitSurface(HitSurface* surface)
 		{
 			s_surfaces[s_numHitSurfaces++] = surface;
+		}
+
+		void UnregisterHitSurface(HitSurface* surface)
+		{
+			for (int i = 0; i < s_numHitSurfaces; ++i)
+			{
+				if (s_surfaces[i] == surface)
+				{
+					s_surfaces[i] = s_surfaces[--s_numHitSurfaces];
+					return;
+				}
+			}
 		}
 
 		void SetupView(int w, int h)
@@ -102,7 +113,7 @@ namespace bitsoccer
 			}
 			
 			glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-			if( !glfwOpenWindow( s_width, s_heigth, 8, 8, 8, 8, 16, 0, GLFW_WINDOW ) )
+			if( !glfwOpenWindow( s_width, s_height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW ) )
 			{
 				fprintf( stderr, "Failed to open GLFW window\n" );
 				glfwTerminate();
@@ -117,7 +128,7 @@ namespace bitsoccer
 			glfwSwapInterval( 1 );
 			glfwSetTime( 0.0 );
 
-			SetupView(s_width, s_heigth);
+			SetupView(s_width, s_height);
 		}
 
 		bool IsRunning()
