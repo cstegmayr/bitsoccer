@@ -72,8 +72,8 @@ namespace bitsoccer
 	{
 		float brickWidth = board.GetBrickWidth();
 		float radius = brickWidth * 0.3f;
-		float posX = m_currentBrick->GetCol()*brickWidth;
-		float posY = m_currentBrick->GetRow()*brickWidth;
+		float posX = (m_currentBrick->GetCol() + 1.0f ) * brickWidth;
+		float posY = (m_currentBrick->GetRow() + 1.0f ) * brickWidth;
 
 		float centerX = posX + brickWidth*0.5f;
 		float centerY = posY + brickWidth*0.5f;
