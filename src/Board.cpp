@@ -22,7 +22,7 @@ namespace bitsoccer
 	{
 	}
 
-	void Board::Draw( Ball* ball )
+	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs )
 	{	
 		for (u32 w = 0; w < m_width; ++w)
 		{
@@ -31,7 +31,7 @@ namespace bitsoccer
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
 				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
-				MoveDirection::Type movableColorDirs = (MoveDirection::Type)ball->GetMovableColorDirections(*this);
+				
 				if	( 
 					( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
 					( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
@@ -46,6 +46,15 @@ namespace bitsoccer
 				b->Draw( (BrickMode::Type)brickType );
 			}
 		}
+	}
+
+	u32 Board::GetNumSurroundingHitSurfaces() const
+	{
+		return m_width*2+m_height*2;
+	}
+	Renderer::HitSurface& Board::GetHitSurface( u32 index )
+	{
+		return m_hitSurfaces[index];
 	}
 	
 	u32 Board::GetNumBricks()
