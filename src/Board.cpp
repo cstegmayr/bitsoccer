@@ -33,12 +33,12 @@ namespace bitsoccer
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
 				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
-				u32 movableColorDirs = ball->GetSameColorDirections(*this);
+				MoveDirection::Type movableColorDirs = (MoveDirection::Type)ball->GetSameColorDirections(*this);
 				if	( 
-					( movableColorDirs & MoveDirection::ToNorth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToEast  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToSouth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToWest  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() )   
+					( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToSouth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() ) ||
+					( movableColorDirs & MoveDirection::ToWest  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() )   
 					)
 					brickType |= (u32)BrickMode::PossibleMove;
 				if ( b->IsGoal(Player::Red) )
