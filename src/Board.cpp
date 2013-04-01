@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+//#include <iostream>
 #include <memory.h>
 
 namespace bitsoccer
@@ -75,7 +76,7 @@ namespace bitsoccer
 
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex)
 	{
-		return m_width*rowIndex + colIndex; 
+		return m_width*colIndex +rowIndex; 
 	}
 
 	void Board::SetupHitSurfaces()
@@ -164,7 +165,7 @@ namespace bitsoccer
 	{
 		u32 index = CalcIndex(row,col);
 		if ( index >= GetSize() )
-			return nullptr;
+			return 0;
 		return m_bricks[index];
 	}
 

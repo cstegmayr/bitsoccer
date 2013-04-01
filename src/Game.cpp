@@ -1,19 +1,24 @@
-#pragma once
-
 #include "Game.h"
 #include "Renderer.h"
 
 namespace bitsoccer
 {
 	Game::Game()
+	: m_board()
+	, m_mixer(new MixerRandom())
+	, m_ball(new Ball())
+	, m_looseBrick(new Brick())
 	{
-		m_mixer  =  new MixerRandom();
-		m_ball   = new Ball();
-		m_looseBrick = new Brick();
 		m_looseBrick->SetColor(Direction::North,Color::Green);
 		m_looseBrick->SetColor(Direction::East ,Color::Red);
 		m_looseBrick->SetColor(Direction::South,Color::Green);
 		m_looseBrick->SetColor(Direction::West ,Color::Blue);
+	}
+
+	Game::~Game()
+	{
+		delete m_mixer;
+		delete m_ball;
 	}
 
 	void Game::Initialize()
@@ -36,12 +41,6 @@ namespace bitsoccer
 	void Game::Draw()
 	{
 		m_board.Draw();
-	}
-
-	Game::~Game()
-	{
-		delete m_mixer;
-		delete m_ball;
 	}
 
 

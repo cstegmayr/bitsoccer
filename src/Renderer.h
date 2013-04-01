@@ -3,7 +3,7 @@
 #include "Types.h"
 
 #include <GL/glfw.h>
-#include <GL/GL.h>
+#include <GL/gl.h>
 
 namespace bitsoccer
 {

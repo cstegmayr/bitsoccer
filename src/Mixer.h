@@ -3,9 +3,11 @@
 namespace bitsoccer
 {
 	class Board;
+	
 	class MixerBase
 	{
 	public:
+		virtual ~MixerBase() {}
 		virtual void Mix(Board& board) = 0;
 	private:
 	};
@@ -14,7 +16,7 @@ namespace bitsoccer
 	{
 	public:
 		MixerRandom();
-		~MixerRandom();
+		virtual ~MixerRandom();
 		virtual void Mix(Board& board);
 	private:
 	};

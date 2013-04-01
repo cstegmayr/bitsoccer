@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Types.h"
 #include "Board.h"
 #include "Ball.h"
@@ -8,10 +10,10 @@ namespace bitsoccer
 	{
 	public:
 		Game();
+		~Game();
 		void Initialize();
 		void Draw();
 		u32 PushBoard(Direction::Type dir, u32 row, u32 col);
-		~Game();
 	private:
 		Board m_board;
 		MixerBase* m_mixer;
