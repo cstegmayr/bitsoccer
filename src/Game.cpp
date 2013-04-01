@@ -51,6 +51,50 @@ namespace bitsoccer
 
 	}
 
+	void Game::Update()
+	{
+		//Check surrounding hit surfaces for mouse picks
+		if ( m_state == PlayState::PlayerRedPush || m_state == PlayState::PlayerBluePush )
+		{
+			s32 foundSurface = -1;
+			for ( u32 i = 0; i < m_board.GetNumSurroundingHitSurfaces(); ++i )
+			{
+				if ( m_board.GetHitSurface(i).state == HitState::Released )
+				{
+					foundSurface = i;
+					break;
+				}
+			}
+			if ( foundSurface >= 0 )
+			{
+				// calc from direction
+				Direction::Type dir;
+				Renderer::HitSurface& hs = m_board.GetHitSurface((u32)foundSurface);
+				
+				if ( hs.startX < m_looseBrick->GetSize() )
+					dir = Direction::North;
+				else if ( hs.startX > m_board.GetWidth()*m_looseBrick->GetSize() )
+
+				// calc index on board
+
+				// push the board
+				PushBoard( dir, row, col );
+
+				// change play state
+			}
+		}
+		else
+		{
+			for ( u32 col = 0; col < m_board.getWidth(); ++col )
+			{
+				for ( u32 row = 0; row < m_board.GetHeight(); ++row )
+
+				if ( m_board.GetBrick(i). )
+			}
+		
+		}
+	}
+
 	void Game::Draw()
 	{
 			

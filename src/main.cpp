@@ -12,8 +12,14 @@ int main(int argc, const char** argv)
 	Game g;
 	g.Initialize();
 
+	double time = glfwGetTime();
+
 	do
 	{
+		double newTime = glfwGetTime(); 
+		double dt = newTime - time;
+		time = newTime;
+		g.Update(dt)
 		g.Draw();
 		Renderer::DrawCallback();
 		glfwSleep(1.0/60.0);

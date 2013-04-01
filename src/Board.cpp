@@ -47,6 +47,15 @@ namespace bitsoccer
 			}
 		}
 	}
+
+	u32 Board::GetNumSurroundingHitSurfaces() const
+	{
+		return m_width*2+m_height*2;
+	}
+	Renderer::HitSurface& Board::GetHitSurface( u32 index )
+	{
+		return m_hitSurfaces[index];
+	}
 	
 	u32 Board::GetNumBricks()
 	{

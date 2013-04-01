@@ -13,6 +13,7 @@ namespace bitsoccer
 		~Game();
 		void Initialize();
 		void Draw();
+		void Update();
 		PlayState::Type GetState() const;
 		bool IsAnimating() const;
 		u32 PushBoard(Direction::Type dir, u32 row, u32 col);

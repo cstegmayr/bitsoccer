@@ -27,7 +27,8 @@ namespace bitsoccer
 		Brick* GetBrick(u32 row, u32 col);
 		u32 CalcIndex(u32 i, u32 j);
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
-
+		u32 GetNumSurroundingHitSurfaces() const;
+		Renderer::HitSurface& GetHitSurface( u32 index );
 		void Draw( Ball* ball );
 		~Board();
 
@@ -41,6 +42,7 @@ namespace bitsoccer
 		u32 m_posY;
 		Brick** m_bricks;
 		Renderer::HitSurface* m_hitSurfaces;
+		
 		
 		
 	};
