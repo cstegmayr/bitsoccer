@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Renderer.h"
 
+#ifndef BITSOCCER_OSX
+
 int main(int argc, const char** argv)
 {
 	using namespace bitsoccer;
@@ -14,8 +16,11 @@ int main(int argc, const char** argv)
 	{
 		g.Draw();
 		Renderer::DrawCallback();
+		glfwSleep(33);
 	} while (Renderer::IsRunning());
 
 
 	return 0;
 }
+
+#endif
