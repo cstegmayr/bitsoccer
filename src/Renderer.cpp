@@ -7,16 +7,15 @@ namespace bitsoccer
 {
 	namespace Renderer
 	{	
-		static int s_width = 800;
-		static int s_heigth = 800;
+		static int s_width = 600;
+		static int s_height = 600;
 		HitSurface* s_surfaces[128];
 		s32 s_numHitSurfaces;
 
 		void GLFWCALL reshape( int w, int h )
 		{
-			int minSize = w < h ? w : h;
 			s_width = w;
-			s_heigth = h;
+			s_height = h;
 			glViewport( 0, 0, (GLsizei)w, (GLsizei)h );
 
 			glMatrixMode( GL_PROJECTION );
@@ -32,37 +31,25 @@ namespace bitsoccer
 		{
 			screenX = (int)x;
 			screenY = (int)y;
-			/*
-			x = x*0.5f + 0.5f;
-			y = -y*0.5f + 0.5f;
-			screenX = (int)(x * (float)s_width + 0.5f);
-			screenY = (int)(y * (float)s_heigth + 0.5f);
-			*/
 		}
 
 		void MapFromScreen(int screenX, int screenY, float& x, float& y)
 		{
 			x = (float)screenX;
 			y = (float)screenY;
-			/*
-			x = (float)screenX / (float)s_width;
-			y = (float)screenY / (float)s_heigth;
-			x = x*2.0f - 1.0f;
-			y = 1.0f - y*2.0f;
-			*/
 		}
 
 		
 		void MapToScreenScale(float width, float height, int& screenWidth, int& screenHeight)
 		{
-			screenWidth = (int)width;//(int)(width * (float)s_width + 0.5f);
-			screenHeight = (int)height;//(int)(height * (float)s_heigth + 0.5f);
+			screenWidth = (int)width;
+			screenHeight = (int)height;
 		}
 
 		void MapFromScreenScale(int screenWidth, int screenHeight, float& width, float& height)
 		{
-			width = (float)screenWidth;//(float)screenWidth / (float)s_width;
-			height = (float)screenHeight;//(float)screenHeight / (float)s_heigth;
+			width = (float)screenWidth;
+			height = (float)screenHeight;
 		}
 
 		bool Inside(HitSurface* hs, int x, int y)
@@ -78,14 +65,18 @@ namespace bitsoccer
 			int x, y;
 			glfwGetMousePos(&x, &y);
 
-			y = s_width - y;
+			y = s_height - y;
 
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{
 				HitSurface* hs = s_surfaces[i];
-				if (Inside(hs, x, y))
+				if (action != GLFW_PRESS)
+				{
+					hs->state = hs->state == HitState::Hold ? HitState::Pressed : HitState::Released;
+				}
+				else if (Inside(hs, x, y))
 				{					
-					hs->state = action == GLFW_PRESS ? HitState::Hold : (hs->state == HitState::Hold ? HitState::Pressed : HitState::Released);
+					hs->state = HitState::Hold;
 				}
 			}
 		}
@@ -93,6 +84,18 @@ namespace bitsoccer
 		void RegisterHitSurface(HitSurface* surface)
 		{
 			s_surfaces[s_numHitSurfaces++] = surface;
+		}
+
+		void UnregisterHitSurface(HitSurface* surface)
+		{
+			for (int i = 0; i < s_numHitSurfaces; ++i)
+			{
+				if (s_surfaces[i] == surface)
+				{
+					s_surfaces[i] = s_surfaces[--s_numHitSurfaces];
+					return;
+				}
+			}
 		}
 
 		void SetupView(int w, int h)
@@ -110,7 +113,7 @@ namespace bitsoccer
 			}
 			
 			glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
-			if( !glfwOpenWindow( s_width, s_heigth, 8, 8, 8, 8, 16, 0, GLFW_WINDOW ) )
+			if( !glfwOpenWindow( s_width, s_height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW ) )
 			{
 				fprintf( stderr, "Failed to open GLFW window\n" );
 				glfwTerminate();
@@ -125,7 +128,7 @@ namespace bitsoccer
 			glfwSwapInterval( 1 );
 			glfwSetTime( 0.0 );
 
-			SetupView(s_width, s_heigth);
+			SetupView(s_width, s_height);
 		}
 
 		bool IsRunning()

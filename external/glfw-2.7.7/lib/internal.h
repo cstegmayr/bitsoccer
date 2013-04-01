@@ -88,12 +88,7 @@ typedef struct {
 // Platform specific definitions goes in platform.h (which also includes
 // glfw.h)
 //------------------------------------------------------------------------
-
-#if _WIN32
-#include "win32\platform.h"
-#else
-#include "cocoa\platform.h
-#endif
+#include <platform.h>
 
 
 //------------------------------------------------------------------------

@@ -1,20 +1,45 @@
+require "tundra.syntax.osx-bundle"
+
 local bit_soccer = Program {
 	Name = "bitsoccer",
 	Sources = {
-		Glob {
-			Dir = "src",
-			Extensions = { ".cpp", ".c" },
+		FGlob {
+			Dir = ".",
+			Extensions = { ".cpp", ".c", ".m", ".mm"  },
+			Filters = {
+				{ Pattern = "x11_"; Config = "x11-*-*" },
+				{ Pattern = "win32_"; Config = "win32-*-*" },
+				--{ Pattern = "main.cpp"; Config = "ignore" },
+				--{ Pattern = "cocoa"; Config = "ignore" },
+				{ Pattern = "carbon_"; Config = "ignore" },
+				{ Pattern = "examples"; Config = "ignore" },
+				{ Pattern = "tests"; Config = "ignore" },
+			},
 		}
 	},
 
+	-- Depends = "glfw",
+
 	Env = {
-	-- LIBS = {"external/glfw/lib/glfw.a"},
-	LIBPATH = {"external/glfw/lib/", "/usr/X11R6/lib/", "/usr/local/lib/"},
-	CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/"},
+		-- LIBS = {"external/glfw/lib/glfw.a"},
+		LIBPATH = {"external/glfw/lib/", "/usr/X11R6/lib/", "/usr/local/lib/"},
+		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib"},
+		CPPDEFS = {"BITSOCCER_OSX"},
 	},
-	-- Frameworks = {"Cocoa", "OpenGL"},
+	Frameworks = {"Cocoa", "OpenGL", "AppKit", "IOKit", "Foundation", "CoreGraphics"},
 	Libs = {
-	{"glfw", "GL", "GLU", "m", "stdc++"}},
+	{"m", "stdc++"}},
 }
 
-Default(bit_soccer)
+local clientBundle = OsxBundle {
+	Depends = { "bitsoccer" },
+	Target = "$(OBJECTDIR)/BitSoccer.app",
+	InfoPList = "src/osx/Info.plist",
+	Executable = "$(OBJECTDIR)/bitsoccer",
+	Resources = {
+		CompileNib { Source = "src/osx/en.lproj/MainMenu.xib", Target = "appnib.nib" },
+		"src/osx/icon.icns",
+	},
+}
+
+Default(clientBundle)
