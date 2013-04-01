@@ -28,6 +28,8 @@ namespace bitsoccer
 		~Board();
 
 	private:
+		void SetupHitSurfaces();
+
 		bool m_initialized;
 		u32 m_width;
 		u32 m_height;

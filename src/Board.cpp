@@ -8,10 +8,13 @@
 namespace bitsoccer
 {
 	Board::Board()
+		: m_initialized(false)
+		, m_width(kBoardWidth)
+		, m_height(kBoardHeight)
+		, m_bricks(0)
+		, m_hitSurfaces(0)
+
 	{
-		m_width  = kBoardWidth;
-		m_height = kBoardHeight;
-		m_initialized = false;
 	}
 
 	void Board::Draw()
@@ -20,7 +23,7 @@ namespace bitsoccer
 		glPushMatrix();
 		glLoadIdentity();
 		int maxSize = m_width > m_height ? m_width : m_height;
-		float scale = 2.0f / (float)(maxSize+2);
+		float scale = 32.0f + 2.0f; // pixels wide
 
 		glBegin(GL_TRIANGLES);
 		{
@@ -28,10 +31,10 @@ namespace bitsoccer
 			{
 				for (u32 h = 0; h < m_height; ++h)
 				{
-					float posX = (w+1) * scale - 1.0f;
-					float posY = (h+1) * scale - 1.0f;
+					float posX = (w+1) * scale;
+					float posY = (h+1) * scale;
 
-					GetBrick(w, h)->Draw(posX+scale*0.01f, posY, scale*0.98f);
+					GetBrick(w, h)->Draw(posX+1.0f, posY, scale-2.0f);
 				}
 			}
 		}
@@ -75,6 +78,71 @@ namespace bitsoccer
 		return m_width*rowIndex + colIndex; 
 	}
 
+	void Board::SetupHitSurfaces()
+	{
+		m_hitSurfaces = (Renderer::HitSurface*)malloc(sizeof(Renderer::HitSurface) * 2 * (m_width + m_height));
+		int maxSize = m_width > m_height ? m_width : m_height;
+		int brickWidth = 32 + 2;
+
+		int currentSurface = 0;
+
+		// Lower buttons
+		for (u32 i = 0; i < m_width; ++i)
+		{
+			m_hitSurfaces[currentSurface].startX = (i+1)*brickWidth+1;
+			m_hitSurfaces[currentSurface].startY = 0;
+			m_hitSurfaces[currentSurface].width = brickWidth-2;
+			m_hitSurfaces[currentSurface].height = brickWidth-2;
+			m_hitSurfaces[currentSurface].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
+
+			++currentSurface;
+		}
+
+		// Upper buttons
+		for (u32 i = 0; i < m_width; ++i)
+		{
+			m_hitSurfaces[currentSurface].startX = (i+1) * brickWidth+1;
+			m_hitSurfaces[currentSurface].startY = (m_height+1) * brickWidth;
+			m_hitSurfaces[currentSurface].width = brickWidth-2;
+			m_hitSurfaces[currentSurface].height = brickWidth-2;
+			m_hitSurfaces[currentSurface].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
+
+			++currentSurface;
+		}
+
+		// Left buttons
+		for (u32 i = 0; i < m_height; ++i)
+		{
+			m_hitSurfaces[currentSurface].startX = 1;
+			m_hitSurfaces[currentSurface].startY = (i+1) * brickWidth;
+			m_hitSurfaces[currentSurface].width = brickWidth-2;
+			m_hitSurfaces[currentSurface].height = brickWidth-2;
+			m_hitSurfaces[currentSurface].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
+
+			++currentSurface;
+		}
+
+		// Right buttons
+		for (u32 i = 0; i < m_height; ++i)
+		{
+			m_hitSurfaces[currentSurface].startX = (m_width+1) * brickWidth+1;
+			m_hitSurfaces[currentSurface].startY = (i+1) * brickWidth;
+			m_hitSurfaces[currentSurface].width = brickWidth-2;
+			m_hitSurfaces[currentSurface].height = brickWidth-2;
+			m_hitSurfaces[currentSurface].state = HitState::Released;
+
+			Renderer::RegisterHitSurface(&m_hitSurfaces[currentSurface]);
+
+			++currentSurface;
+		}
+	}
+
 	void Board::Initialize()
 	{
 		m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
@@ -87,40 +155,7 @@ namespace bitsoccer
 			}
 		}
 
-
-		m_hitSurfaces = (Renderer::HitSurface*)malloc(sizeof(Renderer::HitSurface*) * 2 * (m_width + m_height));
-		int maxSize = m_width > m_height ? m_width : m_height;
-		float scale = 2.0f / (float)(maxSize+2);
-
-		// Upper buttons
-		for (u32 i = 0; i < m_width; ++i)
-		{			
-			int x, y, scaleX, scaleY;
-			Renderer::MapToScreen((float)(i+1) * scale - 1.0f, 1.0f - scale, x, y);
-			Renderer::MapToScreenScale(scale, scale, scaleX, scaleY);
-			m_hitSurfaces[i].startX = x;
-			m_hitSurfaces[i].startY = y;
-			m_hitSurfaces[i].width = scaleX;
-			m_hitSurfaces[i].height = scaleY;
-			m_hitSurfaces[i].state = HitState::Released;
-
-			Renderer::RegisterHitSurface(&m_hitSurfaces[i]);
-		}
-
-		// Lower buttons
-		for (u32 i = 0; i < m_width; ++i)
-		{			
-			int x, y, scaleX, scaleY;
-			Renderer::MapToScreen((float)(i+1) * scale - 1.0f, -1.0f, x, y);
-			Renderer::MapToScreenScale(scale, scale, scaleX, scaleY);
-			m_hitSurfaces[i+m_width].startX = x;
-			m_hitSurfaces[i+m_width].startY = y;
-			m_hitSurfaces[i+m_width].width = scaleX;
-			m_hitSurfaces[i+m_width].height = scaleY;
-			m_hitSurfaces[i+m_width].state = HitState::Released;
-
-			Renderer::RegisterHitSurface(&m_hitSurfaces[i+m_width]);
-		}
+		SetupHitSurfaces();
 
 		m_initialized = true; 
 	}
@@ -152,5 +187,7 @@ namespace bitsoccer
 	
 	Board::~Board()
 	{
+		free(m_bricks);
+		free(m_hitSurfaces);
 	}
 }
