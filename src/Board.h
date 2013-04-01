@@ -5,18 +5,21 @@
 
 namespace bitsoccer
 {
+	class Ball;
+
 	class Board {
 		
 		enum
 		{
-			kBoardWidth = 8,
-			kBoardHeight = 12
+			kBoardWidth = 9,
+			kBoardHeight = 13
 		};
 	public:
 		Board();
 		void Initialize();
-		u32 GetSize();
+		u32 GetNumBricks();
 		u32 GetWidth();
+		u32 GetBrickWidth() const;
 		bool SetWidth(u32 width);
 		u32 GetHeight();
 		bool SetHeight(u32 height);
@@ -24,13 +27,14 @@ namespace bitsoccer
 		u32 CalcIndex(u32 i, u32 j);
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 
-		void Draw();
+		void Draw( Ball* ball );
 		~Board();
 
 	private:
 		void SetupHitSurfaces();
 
 		bool m_initialized;
+		u32 m_brickWidth;
 		u32 m_width;
 		u32 m_height;
 		Brick** m_bricks;

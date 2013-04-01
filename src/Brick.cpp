@@ -72,7 +72,7 @@ namespace bitsoccer
 		m_colors[0] = prev;
 	}
 
-	void Brick::Draw(float posX, float posY, float size)
+	void Brick::Draw(float posX, float posY, float size, BrickMode::Type brickMode)
 	{
 		Vec3 colors[] = {
 			Vec3(0.7f, 0.0f, 0.0f), 
@@ -85,13 +85,22 @@ namespace bitsoccer
 		float width = halfSize * 0.2f;
 		float centerX = posX + halfSize;
 		float centerY = posY + halfSize;
+		
+		Vec3 brickColor(0.5f, 0.5f, 0.5f);
 
-		// Background lower
-		if (IsGoal(Player::Blue) || IsGoal(Player::Red))
-			glColor3f(0.3f, 0.3f, 0.3f);
-		else
-			glColor3f(0.8f, 0.8f, 0.8f);
+		if ( brickMode == BrickMode::Normal )
+			brickColor  = Vec3( 0.8f, 0.8f, 0.8f );
 
+		if ( brickMode & BrickMode::RedGoal )
+			brickColor = brickColor * Vec3( 1.0f, 0.0f, 0.0f );
+
+		if (  brickMode & BrickMode::BlueGoal )
+			brickColor = brickColor * Vec3( 0.0f, 0.0f, 1.0f );
+
+		if (  brickMode & BrickMode::PossibleMove )
+			brickColor = brickColor * Vec3( 1.9f, 0.05f, 1.9f );
+
+		glColor3f(brickColor.r, brickColor.g, brickColor.b );
 		glVertex2f(posX, posY);
 		glVertex2f(posX, posY+size);
 		glVertex2f(posX+size, posY);

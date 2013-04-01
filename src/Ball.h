@@ -9,7 +9,7 @@ namespace bitsoccer
 	{
 	public:
 		Ball();
-		void Draw();
+		void Draw( Board& board );
 		void SetPosition( u32  row, u32  col, Board& board );
 		void GetPosition( u32& row, u32& col ) const;
 		u32 GetRow() const;
