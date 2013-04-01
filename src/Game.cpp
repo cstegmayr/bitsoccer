@@ -52,7 +52,7 @@ namespace bitsoccer
 
 	}
 
-	void Game::Update()
+	void Game::Update(double dt)
 	{
 		//Check surrounding hit surfaces for mouse picks
 		if ( m_state == PlayState::PlayerRedPush || m_state == PlayState::PlayerBluePush )
@@ -69,19 +69,21 @@ namespace bitsoccer
 			if ( foundSurface >= 0 )
 			{
 				// calc from direction
-				Direction::Type dir;
-				Renderer::HitSurface& hs = m_board.GetHitSurface((u32)foundSurface);
-				
-				if ( hs.startX < m_looseBrick->GetSize() )
-					dir = Direction::North;
-				else if ( hs.startX > m_board.GetWidth()*m_looseBrick->GetSize() )
-
+				Direction::Type dir = m_board.GetDirectionFromIndex((u32)foundSurface);
 				// calc index on board
+				u32 row, col;
+				m_board.GetRowColumnFromIndex(row, col);
 
 				// push the board
 				PushBoard( dir, row, col );
 
 				// change play state
+				if ( m_state == PlayState::PlayerRedPush )
+					m_state = PlayState::PlayerRedMove;
+
+				else if ( m_state == PlayState::PlayerBluePush )
+					m_state = PlayState::PlayerBlueMove;
+
 			}
 		}
 		else
@@ -90,7 +92,7 @@ namespace bitsoccer
 			{
 				for ( u32 row = 0; row < m_board.GetHeight(); ++row )
 
-				if ( m_board.GetBrick(i). )
+				if ( m_board.GetBrick(row,col). )
 			}
 		
 		}
