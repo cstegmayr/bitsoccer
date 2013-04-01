@@ -91,7 +91,7 @@ namespace bitsoccer
 
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex)
 	{
-		return m_width*colIndex +rowIndex; 
+		return m_width*rowIndex + colIndex; 
 	}
 
 	void Board::SetupHitSurfaces()
@@ -162,9 +162,9 @@ namespace bitsoccer
 	void Board::Initialize()
 	{
 		m_bricks = (Brick**)malloc(sizeof(Brick*) * m_width * m_height);
-		for (u32 i = 0; i < m_width; ++i)
+		for (u32 i = 0; i < m_height; ++i)
 		{
-			for ( u32 j = 0; j < m_height; ++j)
+			for ( u32 j = 0; j < m_width; ++j)
 			{
 				u32 index = CalcIndex(i,j);
 				m_bricks[index] = new Brick();

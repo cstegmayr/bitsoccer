@@ -8,7 +8,7 @@
 namespace bitsoccer {
 	MixerRandom::MixerRandom()
 	{
-		srand((u32)time(NULL));
+		srand(0); //srand((u32)time(NULL));
 	}
 	
 	u32 GetRandomValue(u32 min, u32 max)
@@ -21,8 +21,8 @@ namespace bitsoccer {
 
 	void MixerRandom::Mix( Board& board )
 	{
-		const u32 numRows = board.GetWidth();
-		const u32 numCols = board.GetHeight();
+		const u32 numCols = board.GetWidth();
+		const u32 numRows = board.GetHeight();
 
 		for ( u32 i = 0; i < numRows; ++i )
 		{
