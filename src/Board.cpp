@@ -1,4 +1,6 @@
 #include "Board.h"
+#include "Ball.h"
+#include "Types.h"
 
 #include <assert.h>
 #include <math.h>
@@ -19,7 +21,7 @@ namespace bitsoccer
 	{
 	}
 
-	void Board::Draw()
+	void Board::Draw( Ball* ball )
 	{	
 		for (u32 w = 0; w < m_width; ++w)
 		{
@@ -28,7 +30,26 @@ namespace bitsoccer
 				float posX = (w+1) * m_brickWidth;
 				float posY = (h+1) * m_brickWidth;
 
-				GetBrick(w, h)->Draw(posX+1.0f, posY, m_brickWidth-2.0f);
+				Brick* b = GetBrick(h, w);
+				u32 brickType = (u32)BrickMode::Normal;
+				Brick* ballBrick = GetBrick( ball->GetCol(), ball->GetRow() );
+				MoveDirection::Type move = (MoveDirection::Type)ball->GetMoveDirections( *this );
+				if	( 
+					( move | MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() 
+					&& b->GetColor( Direction::South ) == ballBrick->GetColor( Direction::North ) )				     ||
+					( move | MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() 
+					&& b->GetColor( Direction::West ) == ballBrick->GetColor( Direction::East ) )				     ||
+					( move | MoveDirection::ToSouth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() 
+					&& b->GetColor( Direction::North ) == ballBrick->GetColor( Direction::South ) )				     ||
+					( move | MoveDirection::ToWest  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() 
+					&& b->GetColor( Direction::East ) == ballBrick->GetColor( Direction::West ) )				     
+					)
+					brickType |= (u32)BrickMode::PossibleMove;
+				if ( b->IsGoal(Player::Red) )
+					brickType |= BrickMode::RedGoal;
+				if ( b->IsGoal(Player::Blue) )
+					brickType |= BrickMode::BlueGoal;
+				b->Draw( posX+1.0f, posY, m_brickWidth-2.0f, BrickMode::Type(brickType) );
 			}
 		}
 	}

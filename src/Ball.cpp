@@ -22,14 +22,14 @@ namespace bitsoccer
 	void Ball::SetPosition(u32 row, u32 col, Board& board)
 	{
 		m_currentBrick = board.GetBrick(row,col);
-		m_neighbourBricks[Direction::North] = board.GetBrick(row  ,col+1);
-		m_neighbourBricks[Direction::East ] = board.GetBrick(row+1,col  );
-		if ( col > 0 )
-			m_neighbourBricks[Direction::South] = board.GetBrick(row  ,col-1);
+		m_neighbourBricks[Direction::North] = board.GetBrick(row+1,col  );
+		m_neighbourBricks[Direction::East ] = board.GetBrick(row  ,col+1);
+		if ( row > 0 )
+			m_neighbourBricks[Direction::South] = board.GetBrick(row-1, col);
 		else
 			m_neighbourBricks[Direction::South] = 0L;
-		if ( row > 0 )
-			m_neighbourBricks[Direction::West ] = board.GetBrick(row-1,col);
+		if ( col > 0 )
+			m_neighbourBricks[Direction::West ] = board.GetBrick(row, col-1);
 		else
 			m_neighbourBricks[Direction::West ] = 0L;
 	}
@@ -66,5 +66,24 @@ namespace bitsoccer
 			moveDirections |= MoveDirection::ToWest;
 
 		return moveDirections;
+	}
+
+	void Ball::Draw( Board& board )
+	{
+		float brickWidth = board.GetBrickWidth();
+		float radius = brickWidth * 0.3f;
+		float posX = m_currentBrick->GetCol()*brickWidth;
+		float posY = m_currentBrick->GetRow()*brickWidth;
+
+		float centerX = posX + brickWidth*0.5f;
+		float centerY = posY + brickWidth*0.5f;
+		glColor3f(0.0f, 0.0f, 0.0f );
+
+		// TRI NORTH
+		glVertex2f(centerX, centerY);
+		glVertex2f(centerX+radius, centerY+radius);
+		glVertex2f(centerX-radius, centerY+radius);
+
+
 	}
 }

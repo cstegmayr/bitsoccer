@@ -5,6 +5,8 @@
 
 namespace bitsoccer
 {
+	class Ball;
+
 	class Board {
 		
 		enum
@@ -25,7 +27,7 @@ namespace bitsoccer
 		u32 CalcIndex(u32 i, u32 j);
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 
-		void Draw();
+		void Draw( Ball* ball );
 		~Board();
 
 	private:

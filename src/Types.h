@@ -80,6 +80,15 @@ namespace bitsoccer
 			struct {float r,g,b;};
 			struct {float x,y,z;};
 		};
+
+		Vec3& operator* (const Vec3& v)
+		{
+			x *= v.x;
+			y *= v.y;
+			z *= v.z;
+
+			return (*this);
+		}
 	};
 
 	namespace HitState
@@ -101,6 +110,18 @@ namespace bitsoccer
 		PlayerBluePush,
 		PlayerBlueMove
 	};
+	}
+
+	namespace BrickMode
+	{
+		enum Type
+		{
+			Normal       = 0,
+			RedGoal      = 1<<0,
+			BlueGoal     = 1<<1,
+			PossibleMove = 1<<2
+		};
+
 	}
 }
 

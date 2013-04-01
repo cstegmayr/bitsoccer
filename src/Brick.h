@@ -13,7 +13,7 @@ namespace bitsoccer
 		bool        IsGoal( Player::Type );
 		void        rotateCW();
 		void        rotateCCW();
-		void		Draw(float posX, float posY, float size);
+		void		Draw(float posX, float posY, float size, BrickMode::Type brickMode);
 		void		NotifyPosition( u32 row, u32 col );
 		u32			GetRow() const;	
 		u32			GetCol() const;	

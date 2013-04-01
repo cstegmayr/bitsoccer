@@ -23,6 +23,16 @@ namespace bitsoccer
 		delete m_ball;
 	}
 
+	PlayState::Type Game::GetState() const
+	{
+		return m_state;
+	}
+
+	bool Game::IsAnimating() const
+	{
+		return m_animationCounter > 0;
+	}
+
 	void Game::Initialize()
 	{
 		m_board.Initialize();
@@ -49,8 +59,9 @@ namespace bitsoccer
 
 		glBegin(GL_TRIANGLES);
 		{
-			m_board.Draw();
-			m_looseBrick->Draw((m_board.GetWidth()+3)*m_board.GetBrickWidth(), 0.0f,m_board.GetBrickWidth()*1.0f-2.0f);
+			m_board.Draw(m_ball);
+			m_looseBrick->Draw( ( m_board.GetWidth() + 3 ) * m_board.GetBrickWidth(), 0.0f, m_board.GetBrickWidth() * 1.0f - 2.0f, BrickMode::Normal );
+			m_ball->Draw( m_board );
 		}
 		glEnd();
 		glPopMatrix();
