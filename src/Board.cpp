@@ -207,14 +207,40 @@ namespace bitsoccer
 
 	Direction::Type Board::GetDirectionFromIndex(u32 index)
 	{
-		if (index < m_width)
+		if (index < m_width)						// Lower
 			return Direction::North;
-		else if (index < 2 * m_width)
+		else if (index < 2 * m_width)				// Upper
 			return Direction::South;
-		else if (index < (2*m_width + m_height))
+		else if (index < (2*m_width + m_height))	// Left
 			return Direction::East;
-		else
+		else										// Right
 			return Direction::West;
+	}
+
+
+	void Board::GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col)
+	{
+		u32 index = hitSurfaceIndex;
+		if (index < m_width)						// Lower
+		{
+			row = 0;
+			col = index % m_width;
+		}
+		else if (index < 2 * m_width)				// Upper
+		{
+			row = m_height - 1;
+			col = (index - m_width) % m_width;
+		}
+		else if (index < (2*m_width + m_height))	// Left
+		{
+			col = 0;
+			row = (index - 2 * m_width) % m_height;
+		}
+		else										// Right
+		{
+			col = m_width - 1;
+			row = (index - 2*m_width - m_height) % m_height;
+		}
 	}
 	
 	Board::~Board()

@@ -29,8 +29,9 @@ namespace bitsoccer
 		u32 CalcIndex(u32 i, u32 j);
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 
-		// Hit surface helpers
-		Direction::Type GetDirectionFromIndex(u32 index);
+		/// Hit surface helpers
+		Direction::Type GetDirectionFromIndex(u32 hitSurfaceIndex);
+		void GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col);
 
 		void Draw( Ball* ball );
 		~Board();
