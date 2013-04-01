@@ -46,15 +46,20 @@ namespace bitsoccer
 		col = m_currentBrick->GetCol();
 	}
 
-	u32 Ball::GetSameColorDirections( Board& board )
+	u32 Ball::GetMovableColorDirections( Board& board )
 	{
 		u32 directions = 0;
 
 		u32 row = m_currentBrick->GetRow();
 		u32 col = m_currentBrick->GetCol();
 
-		Brick* northBrick = board.GetBrick(row+1,col);
-		Brick* eastBrick  = board.GetBrick(row  ,col+1);
+		Brick* northBrick = 0L;
+		
+		if ( row + 1 < board.GetHeight() )
+			northBrick = board.GetBrick(row+1,col);
+		Brick* eastBrick  = 0L;
+		if ( col + 1 < board.GetWidth() ) 
+			eastBrick = board.GetBrick(row  ,col+1);
 		Brick* southBrick = 0L;
 		if (row > 0)
 			southBrick = board.GetBrick(row-1,col);
@@ -62,17 +67,17 @@ namespace bitsoccer
 		if (col > 0 )
 			westBrick = board.GetBrick(row,col-1);
 
-		if ( m_currentBrick->GetColor(Direction::North) == northBrick->GetColor(Direction::South) )
+		if ( northBrick != 0L && ( m_currentBrick->GetColor(Direction::North) == northBrick->GetColor(Direction::South) || northBrick->GetColor(Direction::South) == Color::Green ) )
 			directions |= MoveDirection::ToNorth;
 		
-		if ( m_currentBrick->GetColor(Direction::East) == northBrick->GetColor(Direction::West) )
+		if ( eastBrick != 0L && ( m_currentBrick->GetColor(Direction::East) == eastBrick->GetColor(Direction::West) || eastBrick->GetColor(Direction::West) == Color::Green ) )
 			directions |= MoveDirection::ToEast;
 
 		
-		if ( southBrick != 0L && m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) )
+		if ( southBrick != 0L && ( m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) ||  southBrick->GetColor(Direction::North) == Color::Green ) )
 			directions |= MoveDirection::ToSouth;
 		
-		if ( westBrick != 0L && m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) )
+		if ( westBrick != 0L && ( m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) || westBrick->GetColor(Direction::East) == Color::Green ) )
 			directions |= MoveDirection::ToWest;
 	
 
@@ -80,7 +85,7 @@ namespace bitsoccer
 	}
 
 	// return possible to move directions
-	u32 Ball::GetMoveDirections( Board& board )
+	u32 Ball::GetChangedDirections( Board& board )
 	{
 		u32 row;
 		u32 col;

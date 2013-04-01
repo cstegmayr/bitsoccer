@@ -15,9 +15,9 @@ namespace bitsoccer
 		u32 GetRow() const;
 		u32 GetCol() const;
 		// return possible directions to go
-		u32 GetMoveDirections(Board& board);
+		u32 GetChangedDirections(Board& board);
 
-		u32 GetSameColorDirections(Board& board);
+		u32 GetMovableColorDirections(Board& board);
 
 	private:
 		Brick* m_currentBrick;

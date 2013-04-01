@@ -33,7 +33,7 @@ namespace bitsoccer
 				Brick* b = GetBrick(h, w);
 				u32 brickType = (u32)BrickMode::Normal;
 				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
-				MoveDirection::Type movableColorDirs = (MoveDirection::Type)ball->GetSameColorDirections(*this);
+				MoveDirection::Type movableColorDirs = (MoveDirection::Type)ball->GetMovableColorDirections(*this);
 				if	( 
 					( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
 					( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
