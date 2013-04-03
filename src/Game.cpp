@@ -61,7 +61,7 @@ namespace bitsoccer
 			static double total_time = 0.0;
 			total_time += dt;
 			++frame;
-			if (total_time > 0.33)
+			if (total_time > 1.0)
 			{
 				double fps = frame / total_time;
 				frame = 0;
