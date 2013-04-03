@@ -27,7 +27,7 @@ local bit_soccer = Program {
 		CCOPTS = "-Wall -g -O0",
 		CPPDEFS = {"BITSOCCER_OSX"},
 	},
-	Frameworks = {"Cocoa", "OpenGL", "AppKit", "IOKit", "Foundation", "CoreGraphics"},
+	Frameworks = {"Cocoa", "OpenGL", "AppKit", "IOKit", "Foundation"},
 	Libs = {
 	{"m", "stdc++"}},
 }
