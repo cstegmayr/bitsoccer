@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Renderer.h"
 
+#include <stdio.h>
+
 namespace bitsoccer
 {
 	Game::Game()
@@ -54,6 +56,28 @@ namespace bitsoccer
 
 	void Game::Update(double dt)
 	{
+		{
+			static int frame = 0;
+			static double total_time = 0.0;
+			total_time += dt;
+			++frame;
+			if (total_time > 0.33)
+			{
+				double fps = frame / total_time;
+				frame = 0;
+				total_time = 0;
+				printf("%.2f FPS\n", 1.0 / dt);
+			}
+
+		}
+
+		// If brick is pressed => Rotate it
+		if (m_looseBrick->IsPressed())
+		{
+			printf("Pressed the loose brick\n");
+			m_looseBrick->RotateCW();
+		}
+
 		//Check surrounding hit surfaces for mouse picks
 		if ( m_state == PlayState::PlayerRedPush || m_state == PlayState::PlayerBluePush )
 		{

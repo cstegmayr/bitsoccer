@@ -46,12 +46,6 @@ namespace bitsoccer
 		return m_colors[dir];
 	}
 
-	bool Brick::IsPressed() const
-	{
-		return m_hitSurface.state == HitState::Pressed;
-	}
-
-
 	bool Brick::IsGoal( Player::Type player )
 	{
 		for ( u32 i = 0; i < Direction::NumDirections; ++i )
@@ -65,16 +59,22 @@ namespace bitsoccer
 		return true;
 	}
 
-	void Brick::rotateCW()
-	{	
-		Color::Type prev = m_colors[0];
-		for ( u32 i = 0; i < Direction::NumDirections; ++i )
-		{
-			Color::Type tmp = m_colors[(i+1)%(Direction::NumDirections)];
-			m_colors[(i+1)%(Direction::NumDirections)] = prev;
-			prev = tmp;
-		}
-		m_colors[0] = prev;
+	void Brick::RotateCW()
+	{
+		Color::Type first = m_colors[0];
+		m_colors[0] = m_colors[1];
+		m_colors[1] = m_colors[2];
+		m_colors[2] = m_colors[3];
+		m_colors[3] = first;
+	}
+
+	void Brick::RotateCCW()
+	{
+		Color::Type first = m_colors[3];
+		m_colors[3] = m_colors[2];
+		m_colors[2] = m_colors[1];
+		m_colors[1] = m_colors[0];
+		m_colors[0] = first;
 	}
 
 	void Brick::Draw(BrickMode::Type brickMode)
