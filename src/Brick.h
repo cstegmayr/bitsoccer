@@ -13,6 +13,7 @@ namespace bitsoccer
 		void        SetColor( Direction::Type dir, Color::Type color );
 		Color::Type GetColor( Direction::Type );
 		bool        IsGoal( Player::Type );
+		bool		IsPressed() const;
 		void        rotateCW();
 		void        rotateCCW();
 		void		Draw(BrickMode::Type brickMode);

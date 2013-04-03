@@ -46,6 +46,12 @@ namespace bitsoccer
 		return m_colors[dir];
 	}
 
+	bool Brick::IsPressed() const
+	{
+		return m_hitSurface.state == HitState::Pressed;
+	}
+
+
 	bool Brick::IsGoal( Player::Type player )
 	{
 		for ( u32 i = 0; i < Direction::NumDirections; ++i )

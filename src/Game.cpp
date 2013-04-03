@@ -91,9 +91,13 @@ namespace bitsoccer
 			for ( u32 col = 0; col < m_board.GetWidth(); ++col )
 			{
 				for ( u32 row = 0; row < m_board.GetHeight(); ++row )
-				{}
-
-				//if ( m_board.GetBrick(row,col). )
+				{
+					Brick* b = m_board.GetBrick(row,col);
+					if ( b->IsPressed() ) 
+					{
+						
+					}
+				}
 			}
 		
 		}
@@ -108,7 +112,7 @@ namespace bitsoccer
 
 		glBegin(GL_TRIANGLES);
 		{
-			Color::Type playerColor = m_state == PlayState::PlayerRedPush ? Color::Red : ( m_state == PlayState::PlayerBluePush ? Color::Blue : Color::Green);
+			Color::Type playerColor = m_state == PlayState::PlayerRedMove ? Color::Red : ( m_state == PlayState::PlayerBlueMove ? Color::Blue : Color::Green);
 			m_board.Draw(m_ball, (MoveDirection::Type)m_ball->GetMovableColorDirections( m_board, playerColor ) );
 			m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2);
 			m_looseBrick->Draw( BrickMode::Normal );
