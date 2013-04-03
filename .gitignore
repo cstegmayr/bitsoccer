@@ -33,3 +33,6 @@ Icon
 
 # Custom
 *.orig
+.tundra-ancestors
+.tundra-relcache
+tundra-output/
