@@ -9,21 +9,18 @@ local bit_soccer = Program {
 			Filters = {
 				{ Pattern = "x11_"; Config = "x11-*-*" },
 				{ Pattern = "win32_"; Config = "win32-*-*" },
-				--{ Pattern = "main.cpp"; Config = "ignore" },
-				--{ Pattern = "cocoa"; Config = "ignore" },
+				--{ Pattern = "cocoa_"; Config = "macosx-*-*" },
 				{ Pattern = "carbon_"; Config = "ignore" },
 				{ Pattern = "examples"; Config = "ignore" },
-				{ Pattern = "tests"; Config = "ignore" },
+				{ Pattern = "test"; Config = "ignore" },
+				{ Pattern = "demo"; Config = "ignore" },
 			},
 		}
 	},
 
-	-- Depends = "glfw",
-
 	Env = {
-		-- LIBS = {"external/glfw/lib/glfw.a"},
 		LIBPATH = {"external/glfw/lib/", "/usr/X11R6/lib/", "/usr/local/lib/"},
-		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib"},
+		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib", "external/ftgl-2.1.3~rc5/src/"},
 		CCOPTS = "-Wall -g -O0",
 		CPPDEFS = {"BITSOCCER_OSX"},
 	},
