@@ -24,6 +24,7 @@ local bit_soccer = Program {
 		-- LIBS = {"external/glfw/lib/glfw.a"},
 		LIBPATH = {"external/glfw/lib/", "/usr/X11R6/lib/", "/usr/local/lib/"},
 		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib"},
+		CCOPTS = "-Wall -g -O0",
 		CPPDEFS = {"BITSOCCER_OSX"},
 	},
 	Frameworks = {"Cocoa", "OpenGL", "AppKit", "IOKit", "Foundation", "CoreGraphics"},

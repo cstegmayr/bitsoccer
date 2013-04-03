@@ -267,6 +267,14 @@ namespace bitsoccer
 			}
 		}
 		free(m_bricks);
+
+		if (m_hitSurfaces)
+		{
+			for (int i = 0; i < 2 * m_width * m_height; ++i)
+			{
+				Renderer::UnregisterHitSurface(&m_hitSurfaces[i]);
+			}
+		}
 		free(m_hitSurfaces);
 	}
 }
