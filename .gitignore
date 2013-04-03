@@ -36,3 +36,4 @@ Icon
 .tundra-ancestors
 .tundra-relcache
 tundra-output/
+proj/ipch/
