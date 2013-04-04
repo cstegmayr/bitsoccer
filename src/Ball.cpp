@@ -80,18 +80,18 @@ namespace bitsoccer
 			directions |= MoveDirection::ToNorth;
 		
 		if ( eastBrick != 0L && 
-			( ( m_currentBrick->GetColor(Direction::East) == eastBrick->GetColor(Direction::West) && eastBrick->GetColor(Direction::South) == color )  ||
+			( ( m_currentBrick->GetColor(Direction::East) == eastBrick->GetColor(Direction::West) && eastBrick->GetColor(Direction::West) == color )  ||
 			eastBrick->GetColor(Direction::West) == Color::Green ) )
 			directions |= MoveDirection::ToEast;
 
 		
 		if ( southBrick != 0L &&
-			( ( m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) && southBrick->GetColor(Direction::South) == color ) ||
+			( ( m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) && southBrick->GetColor(Direction::North) == color ) ||
 			southBrick->GetColor(Direction::North) == Color::Green ) )
 			directions |= MoveDirection::ToSouth;
 		
 		if ( westBrick != 0L &&
-			( ( m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) && westBrick->GetColor(Direction::South) == color )  ||
+			( ( m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) && westBrick->GetColor(Direction::East) == color )  ||
 			westBrick->GetColor(Direction::East) == Color::Green ) )
 			directions |= MoveDirection::ToWest;
 	
