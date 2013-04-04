@@ -127,6 +127,7 @@ namespace bitsoccer
 			glfwSetWindowSizeCallback( reshape );
 			glfwSetMouseButtonCallback( mouseButtonCallback );
 			glfwEnable( GLFW_STICKY_KEYS );
+			glfwEnable( GLFW_STICKY_MOUSE_BUTTONS );
 			glfwSwapInterval( 1 );
 			glfwSetTime( 0.0 );
 
