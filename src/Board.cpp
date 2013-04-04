@@ -22,6 +22,26 @@ namespace bitsoccer
 	{
 	}
 
+	u32 Board::GetBrickType( Ball* ball, MoveDirection::Type movableColorDirs, u32 h, u32 w)
+	{
+		Brick* b = GetBrick(h, w);
+		u32 brickType = (u32)BrickMode::Normal;
+		Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
+		
+		if	( 
+			( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
+			( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
+			( movableColorDirs & MoveDirection::ToSouth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() ) ||
+			( movableColorDirs & MoveDirection::ToWest  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() )   
+			)
+			brickType |= (u32)BrickMode::PossibleMove;
+		if ( b->IsGoal(Player::Red) )
+			brickType |= BrickMode::RedGoal;
+		if ( b->IsGoal(Player::Blue) )
+			brickType |= BrickMode::BlueGoal;
+		return brickType;
+	}
+
 	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs )
 	{	
 		for (u32 w = 0; w < m_width; ++w)
@@ -29,20 +49,7 @@ namespace bitsoccer
 			for (u32 h = 0; h < m_height; ++h)
 			{
 				Brick* b = GetBrick(h, w);
-				u32 brickType = (u32)BrickMode::Normal;
-				Brick* ballBrick = GetBrick( ball->GetRow(), ball->GetCol() );
-				
-				if	( 
-					( movableColorDirs & MoveDirection::ToNorth && h > 0 && w     == ball->GetCol() && h - 1 == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToEast  && w > 0 && w - 1 == ball->GetCol() && h     == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToSouth &&          w     == ball->GetCol() && h + 1 == ball->GetRow() ) ||
-					( movableColorDirs & MoveDirection::ToWest  &&          w + 1 == ball->GetCol() && h     == ball->GetRow() )   
-					)
-					brickType |= (u32)BrickMode::PossibleMove;
-				if ( b->IsGoal(Player::Red) )
-					brickType |= BrickMode::RedGoal;
-				if ( b->IsGoal(Player::Blue) )
-					brickType |= BrickMode::BlueGoal;
+				u32 brickType = GetBrickType(ball, movableColorDirs, h, w);
 				b->Draw( (BrickMode::Type)brickType );
 			}
 		}
