@@ -2,6 +2,8 @@
 #include "Renderer.h"
 
 #include <string.h> // For memset
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 namespace bitsoccer
 {
@@ -77,7 +79,23 @@ namespace bitsoccer
 		m_colors[0] = first;
 	}
 
-	void Brick::Draw(BrickMode::Type brickMode)
+	Vec3 ColorDarken( Vec3 color )
+	{
+		double darkMod = 0.8;
+		color = color * Vec3(darkMod, darkMod, darkMod);
+		return color;
+	}
+
+	Vec3 ColorPuls( Vec3 color )
+	{
+		double currentTimeMod = 0.0;
+		double dummy = 4.0;
+		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.2 + 0.1;
+		color = color * Vec3(currentTimeMod, currentTimeMod, currentTimeMod);
+		return color;
+	}
+
+	void Brick::Draw(BrickMode::Type brickMode, Color::Type playerColor)
 	{
 		const Vec3 colors[] = {
 			Vec3(0.7f, 0.0f, 0.0f),  // Red
@@ -121,6 +139,11 @@ namespace bitsoccer
 
 		// TRI NORTH
 		Vec3 color = colors[m_colors[Direction::North]];
+		if ( m_colors[Direction::North] == playerColor && m_colors[Direction::North] != Color::Green )
+			color = bitsoccer::ColorPuls(color);
+		else if ( m_colors[Direction::North] != Color::Green )
+			color = bitsoccer::ColorDarken(color);
+		
 		glColor3f(color.r, color.g, color.b);
 		glVertex3i(centerX, centerY, 1);
 		glVertex3i(centerX+width, centerY+halfSize, 1);
@@ -128,6 +151,10 @@ namespace bitsoccer
 
 		// TRI EAST
 		color = colors[m_colors[Direction::East]];
+		if ( m_colors[Direction::East] == playerColor && m_colors[Direction::East] != Color::Green )
+			color = bitsoccer::ColorPuls(color);
+		else if ( m_colors[Direction::East] != Color::Green )
+			color = bitsoccer::ColorDarken(color);
 		glColor3f(color.r, color.g, color.b);
 		glVertex3i(centerX, centerY, 1);
 		glVertex3i(centerX+halfSize, centerY+width, 1);
@@ -135,6 +162,10 @@ namespace bitsoccer
 
 		// TRI SOUTH
 		color = colors[m_colors[Direction::South]];
+		if ( m_colors[Direction::South] == playerColor && m_colors[Direction::South] != Color::Green )
+			color = bitsoccer::ColorPuls(color);
+		else if ( m_colors[Direction::South] != Color::Green )
+			color = bitsoccer::ColorDarken(color);
 		glColor3f(color.r, color.g, color.b);
 		glVertex3i(centerX, centerY, 1);
 		glVertex3i(centerX+width, centerY-halfSize, 1);
@@ -142,6 +173,10 @@ namespace bitsoccer
 
 		// TRI WEST
 		color = colors[m_colors[Direction::West]];
+		if ( m_colors[Direction::West] == playerColor && m_colors[Direction::West] != Color::Green )
+			color = bitsoccer::ColorPuls(color);
+		else if ( m_colors[Direction::West] != Color::Green )
+			color = bitsoccer::ColorDarken(color);
 		glColor3f(color.r, color.g, color.b);
 		glVertex3i(centerX, centerY, 1);
 		glVertex3i(centerX-halfSize, centerY+width, 1);

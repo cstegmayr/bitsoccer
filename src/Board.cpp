@@ -42,7 +42,7 @@ namespace bitsoccer
 		return brickType;
 	}
 
-	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs )
+	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs, Color::Type playerColor )
 	{	
 		for (u32 w = 0; w < m_width; ++w)
 		{
@@ -50,7 +50,7 @@ namespace bitsoccer
 			{
 				Brick* b = GetBrick(h, w);
 				u32 brickType = GetBrickType(ball, movableColorDirs, h, w);
-				b->Draw( (BrickMode::Type)brickType );
+				b->Draw( (BrickMode::Type)brickType, playerColor );
 			}
 		}
 	}

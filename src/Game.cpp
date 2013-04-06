@@ -159,6 +159,19 @@ namespace bitsoccer
 		}
 	}
 
+	/**
+	returns Color::Green if the game is in push state. Othrewise returns color of player that is supposed to move the ball.
+	*/
+	Color::Type Game::GetMovePlayerColor( const bool includePushState )
+	{
+		Color::Type playerColor = Color::Green;
+		if ( m_state == PlayState::PlayerRedMove || ( includePushState && m_state == PlayState::PlayerRedPush ) )
+			playerColor = Color::Red;
+		else if ( m_state == PlayState::PlayerBlueMove || ( includePushState && m_state == PlayState::PlayerBluePush ) )
+			playerColor = Color::Blue;
+		return playerColor;
+	}
+
 	void Game::Draw()
 	{
 			
@@ -168,10 +181,14 @@ namespace bitsoccer
 
 		glBegin(GL_TRIANGLES);
 		{
-			Color::Type playerColor = m_state == PlayState::PlayerRedMove ? Color::Red : ( m_state == PlayState::PlayerBlueMove ? Color::Blue : Color::Green);
-			m_board.Draw(m_ball, (MoveDirection::Type)m_ball->GetMovableColorDirections( m_board, playerColor ) );
+			Color::Type playerColor = GetMovePlayerColor(false);
+			MoveDirection::Type moveDir = (MoveDirection::Type)m_ball->GetMovableColorDirections( m_board, playerColor );
+			
+			playerColor = GetMovePlayerColor(true);
+			m_board.Draw(m_ball, moveDir, playerColor );
 			m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2);
-			m_looseBrick->Draw( BrickMode::Normal );
+			
+			m_looseBrick->Draw( BrickMode::Normal, playerColor );
 			m_ball->Draw( m_board );
 		}
 		glEnd();

@@ -16,7 +16,7 @@ namespace bitsoccer
 		bool		IsPressed() const { return m_hitSurface.state == HitState::Pressed; }
 		void        RotateCW();
 		void        RotateCCW();
-		void		Draw(BrickMode::Type brickMode);
+		void		Draw(BrickMode::Type brickMode, Color::Type playerColor);
 		void		NotifyPosition( u32 row, u32 col );
 		u32			GetRow() const { return m_row; }	
 		u32			GetCol() const { return m_col; }

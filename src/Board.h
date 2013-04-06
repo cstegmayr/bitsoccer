@@ -36,7 +36,7 @@ namespace bitsoccer
 		Direction::Type GetDirectionFromIndex(u32 hitSurfaceIndex);
 		void GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col);
 		u32 GetBrickType( Ball* ball, MoveDirection::Type movableColorDirs, u32 h, u32 w);
-		void Draw( Ball* ball, MoveDirection::Type movableColorDirs );
+		void Draw( Ball* ball, MoveDirection::Type movableColorDirs, Color::Type playerColor );
 		~Board();
 
 	private:
