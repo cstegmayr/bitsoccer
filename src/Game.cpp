@@ -41,7 +41,7 @@ namespace bitsoccer
 		m_board.Initialize(64, 64);
 		m_looseBrick->SetBoardOrigin(64, 64);
 		m_mixer->Mix(m_board);
-		m_ball->SetPosition(m_board.GetWidth()/2, m_board.GetHeight()/2, m_board);
+		m_ball->SetPosition( m_board.GetHeight()/2,m_board.GetWidth()/2, m_board);
 	}
 
 	u32 Game::PushBoard(Direction::Type dir, u32 row, u32 col)
