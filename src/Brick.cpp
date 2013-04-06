@@ -79,20 +79,20 @@ namespace bitsoccer
 		m_colors[0] = first;
 	}
 
-	Vec3 ColorDarken( Vec3 color )
+	Vec3 ColorDarken( const Vec3& color )
 	{
 		double darkMod = 0.8;
-		color = color * Vec3(darkMod, darkMod, darkMod);
-		return color;
+		Vec3 newColor = color;// Vec3(darkMod, darkMod, darkMod) * color;
+		return newColor;
 	}
 
-	Vec3 ColorPuls( Vec3 color )
+	Vec3 ColorPuls( const Vec3& color )
 	{
 		double currentTimeMod = 0.0;
-		double dummy = 4.0;
-		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.2 + 0.1;
-		color = color * Vec3(currentTimeMod, currentTimeMod, currentTimeMod);
-		return color;
+		double dummy = 2.0;
+		currentTimeMod = fabs(cosf(modf(glfwGetTime() / dummy, &dummy) * M_PI)) * 0.2 + 0.1;
+		Vec3 newColor = Vec3(currentTimeMod+color.r, currentTimeMod+color.g, currentTimeMod+color.b);
+		return newColor;
 	}
 
 	void Brick::Draw(BrickMode::Type brickMode, Color::Type playerColor)
