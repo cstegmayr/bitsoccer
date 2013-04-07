@@ -101,7 +101,28 @@ namespace bitsoccer
 				// push the board
 				PushBoard( dir, row, col );
 
-				// change play state
+			}
+			else
+			{
+				for ( u32 col = 0; col < m_board.GetWidth(); ++col )
+				{
+					bool doBreak = false;
+					for ( u32 row = 0; row < m_board.GetHeight(); ++row )
+					{
+						Brick* b = m_board.GetBrick(row,col);
+						if ( b->IsPressed() ) 
+						{
+							foundSurface = 1; // notify that the player rotates a brick instead of pushing the board
+							b->RotateCW();
+						}
+					}
+					if ( doBreak )
+						break;
+				}
+			}
+
+			if ( foundSurface >= 0 )
+			{				// change play state
 				if ( m_state == PlayState::PlayerRedPush )
 				{
 					m_state = PlayState::PlayerRedMove;
@@ -122,7 +143,6 @@ namespace bitsoccer
 						m_state = PlayState::PlayerRedPush;
 					}
 				}
-
 			}
 		}
 		else
