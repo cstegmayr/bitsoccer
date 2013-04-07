@@ -17,16 +17,18 @@ namespace bitsoccer
 	public:
 		Board();
 		void Initialize(u32 x, u32 y);
-		u32 GetNumBricks();
-		u32 GetWidth();
+		u32 GetNumBricks() const;
+		u32 GetWidth() const;
 		bool SetWidth(u32 width);
-		u32 GetHeight();
+		u32 GetHeight() const;
 		void SetPosition(u32 x, u32 y);
 		u32 GetXPosition() const { return m_posX; }
 		u32 GetYPosition() const { return m_posY; }
 		bool SetHeight(u32 height);
 		Brick* GetBrick(u32 row, u32 col);
-		u32 CalcIndex(u32 i, u32 j);
+		Direction::Type GetOppositeDirection( Direction::Type dir ) const;
+		const Brick* GetBrick(u32 row, u32 col) const;
+		u32 CalcIndex(u32 i, u32 j) const;
 		Brick* Push( Direction::Type dir, u32 row, u32 col, Brick* brick );
 
 		u32 GetNumSurroundingHitSurfaces() const;
@@ -35,6 +37,8 @@ namespace bitsoccer
 		/// Hit surface helpers
 		Direction::Type GetDirectionFromIndex(u32 hitSurfaceIndex);
 		void GetRowColumnFromIndex(u32 hitSurfaceIndex, u32& row, u32& col);
+		u32 GetPossibleColorMoveDirections( u32 row, u32 col, Color::Type playerColor ) const;
+		bool GetMovePathForColor( const Ball* ball, const u32 row, const u32 col, const Color::Type playerColor ) const;
 		u32 GetBrickType( Ball* ball, MoveDirection::Type movableColorDirs, u32 h, u32 w);
 		void Draw( Ball* ball, MoveDirection::Type movableColorDirs, Color::Type playerColor );
 		~Board();

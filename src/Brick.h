@@ -11,7 +11,7 @@ namespace bitsoccer
 		Brick();
 		~Brick();
 		void        SetColor( Direction::Type dir, Color::Type color );
-		Color::Type GetColor( Direction::Type );
+		Color::Type GetColor( Direction::Type ) const;
 		bool        IsGoal( Player::Type );
 		bool		IsPressed() const { return m_hitSurface.state == HitState::Pressed; }
 		void        RotateCW();

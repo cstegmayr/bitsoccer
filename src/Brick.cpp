@@ -43,7 +43,7 @@ namespace bitsoccer
 		m_hitSurface.startY = GetY();
 	}
 
-	Color::Type Brick::GetColor( Direction::Type dir )
+	Color::Type Brick::GetColor( Direction::Type dir ) const
 	{
 		return m_colors[dir];
 	}

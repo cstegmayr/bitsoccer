@@ -136,10 +136,10 @@ namespace bitsoccer
 					if ( b->IsPressed() ) 
 					{
 						Color::Type playerColor = m_state == PlayState::PlayerRedMove ? Color::Red : Color::Blue;
-						u32 movableDirections = m_ball->GetMovableColorDirections(m_board, playerColor);
-						u32 brickType = m_board.GetBrickType(m_ball, (MoveDirection::Type)movableDirections, row, col);
+						//u32 movableDirections = m_ball->GetMovableColorDirections(m_board, playerColor);
+						//u32 brickType = m_board.GetBrickType(m_ball, (MoveDirection::Type)movableDirections, row, col);
 
-						if ( brickType & BrickMode::PossibleMove )
+						if (m_board.GetMovePathForColor(m_ball, row, col, playerColor)) //if ( brickType & BrickMode::PossibleMove )
 						{
 							m_ball->SetPosition(row,col,m_board);
 							if ( playerColor == Color::Red )
