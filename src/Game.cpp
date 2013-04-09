@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 namespace bitsoccer
 {
@@ -56,6 +57,7 @@ namespace bitsoccer
 
 	void Game::Update(double dt)
 	{
+#if 0
 		{
 			static int frame = 0;
 			static double total_time = 0.0;
@@ -70,6 +72,7 @@ namespace bitsoccer
 			}
 
 		}
+#endif
 
 		// If brick is pressed => Rotate it
 		if (m_looseBrick->IsPressed())
@@ -78,84 +81,20 @@ namespace bitsoccer
 			m_looseBrick->RotateCW();
 		}
 
-		//Check surrounding hit surfaces for mouse picks
-		if ( m_state == PlayState::PlayerRedPush || m_state == PlayState::PlayerBluePush )
+		// Update state machine
+		switch (m_state)
 		{
-			s32 foundSurface = -1;
-			for ( u32 i = 0; i < m_board.GetNumSurroundingHitSurfaces(); ++i )
-			{
-				if ( m_board.GetHitSurface(i).state == HitState::Pressed )
-				{
-					foundSurface = i;
-					break;
-				}
-			}
-			if ( foundSurface >= 0 )
-			{
-				// calc from direction
-				Direction::Type dir = m_board.GetDirectionFromIndex((u32)foundSurface);
-				// calc index on board
-				u32 row, col;
-				m_board.GetRowColumnFromIndex((u32)foundSurface,row,col);
-
-				// push the board
-				PushBoard( dir, row, col );
-
-				// change play state
-				if ( m_state == PlayState::PlayerRedPush )
-				{
-					m_state = PlayState::PlayerRedMove;
-					u32 movableDirections = m_ball->GetMovableColorDirections(m_board, Color::Red);
-					if ( movableDirections == 0 )
-					{
-						//There is nowhere to go for player red
-						m_state = PlayState::PlayerBluePush;
-					}
-				}
-				else if ( m_state == PlayState::PlayerBluePush )
-				{
-					m_state = PlayState::PlayerBlueMove;
-					u32 movableDirections = m_ball->GetMovableColorDirections(m_board, Color::Blue);
-					if ( movableDirections == 0 )
-					{
-						//There is nowhere to go for player blue
-						m_state = PlayState::PlayerRedPush;
-					}
-				}
-
-			}
-		}
-		else
-		{
-			for ( u32 col = 0; col < m_board.GetWidth(); ++col )
-			{
-				bool doBreak = false;
-				for ( u32 row = 0; row < m_board.GetHeight(); ++row )
-				{
-					Brick* b = m_board.GetBrick(row,col);
-					if ( b->IsPressed() ) 
-					{
-						Color::Type playerColor = m_state == PlayState::PlayerRedMove ? Color::Red : Color::Blue;
-						u32 movableDirections = m_ball->GetMovableColorDirections(m_board, playerColor);
-						u32 brickType = m_board.GetBrickType(m_ball, (MoveDirection::Type)movableDirections, row, col);
-
-						if ( brickType & BrickMode::PossibleMove )
-						{
-							m_ball->SetPosition(row,col,m_board);
-							if ( playerColor == Color::Red )
-								m_state = PlayState::PlayerBluePush;
-							else
-								m_state = PlayState::PlayerRedPush;
-							doBreak = true;
-							break;
-						}
-						
-					}
-				}
-				if ( doBreak )
-					break;
-			}
-		
+		case PlayState::PlayerRedPush:
+		case PlayState::PlayerBluePush:
+			UpdatePushState();
+			break;
+		case PlayState::PlayerRedMove:
+		case PlayState::PlayerBlueMove:
+			UpdateMoveState();
+			break;
+		default:
+			printf("Player state not implemented\n");
+			abort();
 		}
 	}
 
@@ -178,5 +117,83 @@ namespace bitsoccer
 		glPopMatrix();
 	}
 
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// PRIVATE METHODS 
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	void Game::UpdatePushState()
+	{
+		s32 foundSurface = -1;
+		for ( u32 i = 0; i < m_board.GetNumSurroundingHitSurfaces(); ++i )
+		{
+			if ( m_board.GetHitSurface(i).state == HitState::Pressed )
+			{
+				foundSurface = i;
+				break;
+			}
+		}
+		if ( foundSurface >= 0 )
+		{
+			// calc from direction
+			Direction::Type dir = m_board.GetDirectionFromIndex((u32)foundSurface);
+			// calc index on board
+			u32 row, col;
+			m_board.GetRowColumnFromIndex((u32)foundSurface,row,col);
+
+			// push the board
+			PushBoard( dir, row, col );
+
+			// change play state
+			if ( m_state == PlayState::PlayerRedPush )
+			{
+				m_state = PlayState::PlayerRedMove;
+				u32 movableDirections = m_ball->GetMovableColorDirections(m_board, Color::Red);
+				if ( movableDirections == 0 )
+				{
+					//There is nowhere to go for player red
+					m_state = PlayState::PlayerBluePush;
+				}
+			}
+			else if ( m_state == PlayState::PlayerBluePush )
+			{
+				m_state = PlayState::PlayerBlueMove;
+				u32 movableDirections = m_ball->GetMovableColorDirections(m_board, Color::Blue);
+				if ( movableDirections == 0 )
+				{
+					//There is nowhere to go for player blue
+					m_state = PlayState::PlayerRedPush;
+				}
+			}
+		}
+	}
+
+	void Game::UpdateMoveState()
+	{
+		for ( u32 col = 0; col < m_board.GetWidth(); ++col )
+		{
+			for ( u32 row = 0; row < m_board.GetHeight(); ++row )
+			{
+				Brick* b = m_board.GetBrick(row,col);
+				if ( b->IsPressed() ) 
+				{
+					Color::Type playerColor = m_state == PlayState::PlayerRedMove ? Color::Red : Color::Blue;
+					u32 movableDirections = m_ball->GetMovableColorDirections(m_board, playerColor);
+					u32 brickType = m_board.GetBrickType(m_ball, (MoveDirection::Type)movableDirections, row, col);
+
+					if ( brickType & BrickMode::PossibleMove )
+					{
+						m_ball->SetPosition(row,col,m_board);
+						if ( playerColor == Color::Red )
+							m_state = PlayState::PlayerBluePush;
+						else
+							m_state = PlayState::PlayerRedPush;
+
+						return;
+					}						
+				}
+			}
+		}
+	}
 
 }

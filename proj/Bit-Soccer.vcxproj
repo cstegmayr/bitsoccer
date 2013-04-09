@@ -72,6 +72,7 @@
     <ClInclude Include="..\src\Brick.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\Game.h" />
+    <ClInclude Include="..\src\MainLoop.h" />
     <ClInclude Include="..\src\Mixer.h" />
     <ClInclude Include="..\src\Renderer.h" />
     <ClInclude Include="..\src\Types.h" />
@@ -82,6 +83,7 @@
     <ClCompile Include="..\src\Brick.cpp" />
     <ClCompile Include="..\src\Game.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\MainLoop.cpp" />
     <ClCompile Include="..\src\Mixer.cpp" />
     <ClCompile Include="..\src\Renderer.cpp" />
   </ItemGroup>

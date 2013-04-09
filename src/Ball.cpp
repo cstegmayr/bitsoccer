@@ -133,7 +133,7 @@ namespace bitsoccer
 
 		double currentTimeMod = 0.0;
 		double dummy = 4.0;
-		currentTimeMod = fabs(cosf(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.5 + 0.1;
+		currentTimeMod = fabs(cos(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.5 + 0.1;
 		//currentTimeMod = modf(glfwGetTime(), &dummy);
 
 		u32 numSeg = 9;

@@ -18,6 +18,9 @@ namespace bitsoccer
 		bool IsAnimating() const;
 		u32 PushBoard(Direction::Type dir, u32 row, u32 col);
 	private:
+		void UpdatePushState();
+		void UpdateMoveState();
+
 		Board m_board;
 		MixerBase* m_mixer;
 		Ball* m_ball;
