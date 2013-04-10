@@ -20,7 +20,7 @@ local bit_soccer = Program {
 
 	Env = {
 		LIBPATH = {"external/glfw/lib/", "/usr/X11R6/lib/", "/usr/local/lib/"},
-		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib", "external/ftgl-2.1.3~rc5/src/"},
+		CPPPATH = {"/usr/X11R6/include/", "external/glfw/include/", "external/glfw-2.7.7/lib/cocoa", "external/glfw-2.7.7/lib", "external/"},
 		CCOPTS = "-Wall -g -O0",
 		CPPDEFS = {"BITSOCCER_OSX"},
 	},
@@ -37,6 +37,11 @@ local clientBundle = OsxBundle {
 	Resources = {
 		CompileNib { Source = "src/osx/en.lproj/MainMenu.xib", Target = "appnib.nib" },
 		"src/osx/icon.icns",
+		Glob
+		{
+			Dir = "data",
+			Extensions = {".tga", ".ttf"},
+		},
 	},
 }
 
