@@ -26,7 +26,12 @@ namespace bitsoccer
 			g.Update(dt);
 			g.Draw();
 			Renderer::DrawCallback();
-			glfwSleep(1.0/60.0);
+
+			const double wantedFrametime = 1.0 / 30.0;
+			const double sleepThreshold = 1.0/1000.0;
+			double sleepTime = wantedFrametime - (glfwGetTime() - newTime) - sleepThreshold;
+			if (sleepTime > 0.0)
+				glfwSleep(sleepTime);
 		} while (Renderer::IsRunning());
 
 

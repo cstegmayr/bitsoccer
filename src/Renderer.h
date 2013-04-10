@@ -7,6 +7,8 @@
 
 namespace bitsoccer
 {
+	class Font;
+
 	namespace Renderer
 	{
 		struct HitSurface
@@ -27,6 +29,10 @@ namespace bitsoccer
 		void DrawCallback();
 		void Terminate();
 		bool IsRunning();
+
+		int rprintf(int x, int y, Vec3 color, const char* format, ...);
+		int rprintf(int x, int y, const char* format, ...);
+		Font* GetFont();
 
 	}
 }
