@@ -74,25 +74,22 @@ namespace bitsoccer
 		if (col > 0 )
 			westBrick = board.GetBrick(row,col-1);
 
-		if ( northBrick != 0L && 
-			( ( m_currentBrick->GetColor(Direction::North) == northBrick->GetColor(Direction::South) && northBrick->GetColor(Direction::South) == color ) ||
-			northBrick->GetColor(Direction::South) == Color::Green ) )
+		// To move to a square neighbouring the ball, the two colors must match and has to be the color of the player or green
+		if ( northBrick != 0L &&  m_currentBrick->GetColor(Direction::North) == northBrick->GetColor(Direction::South) && 
+				( northBrick->GetColor(Direction::South) == color || northBrick->GetColor(Direction::South) == Color::Green ) )
 			directions |= MoveDirection::ToNorth;
 		
-		if ( eastBrick != 0L && 
-			( ( m_currentBrick->GetColor(Direction::East) == eastBrick->GetColor(Direction::West) && eastBrick->GetColor(Direction::West) == color )  ||
-			eastBrick->GetColor(Direction::West) == Color::Green ) )
+		if ( eastBrick != 0L &&  m_currentBrick->GetColor(Direction::East) == eastBrick->GetColor(Direction::West) && 
+				( eastBrick->GetColor(Direction::West) == color || eastBrick->GetColor(Direction::West) == Color::Green ) )
 			directions |= MoveDirection::ToEast;
 
 		
-		if ( southBrick != 0L &&
-			( ( m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) && southBrick->GetColor(Direction::North) == color ) ||
-			southBrick->GetColor(Direction::North) == Color::Green ) )
+		if ( southBrick != 0L && m_currentBrick->GetColor(Direction::South) == southBrick->GetColor(Direction::North) &&
+				( southBrick->GetColor(Direction::North) == color || southBrick->GetColor(Direction::North) == Color::Green ) )
 			directions |= MoveDirection::ToSouth;
 		
-		if ( westBrick != 0L &&
-			( ( m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) && westBrick->GetColor(Direction::East) == color )  ||
-			westBrick->GetColor(Direction::East) == Color::Green ) )
+		if ( westBrick != 0L && m_currentBrick->GetColor(Direction::West) == westBrick->GetColor(Direction::East) &&
+				( westBrick->GetColor(Direction::East) == color || westBrick->GetColor(Direction::East) == Color::Green ) )
 			directions |= MoveDirection::ToWest;
 	
 
