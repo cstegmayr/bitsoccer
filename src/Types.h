@@ -39,10 +39,10 @@ namespace bitsoccer
 	{
 	enum Type
 	{
-		ToNorth = 1<<0,
-		ToEast = 1<<1,
-		ToSouth = 1<<2,
-		ToWest = 1<<3,
+		ToNorth = 1<<0, // 1
+		ToEast = 1<<1,  // 2
+		ToSouth = 1<<2, // 4
+		ToWest = 1<<3,  // 8
 		FromNorth = ToSouth,
 		FromEast = ToWest,
 		FromSouth = ToNorth,

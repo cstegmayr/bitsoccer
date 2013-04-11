@@ -12,6 +12,7 @@ namespace bitsoccer
 		Game();
 		~Game();
 		void Initialize();
+		Color::Type GetMovePlayerColor(const bool includePushState);
 		void Draw();
 		void Update(double dt);
 		PlayState::Type GetState() const;
