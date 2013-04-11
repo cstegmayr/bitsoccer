@@ -237,6 +237,7 @@ namespace bitsoccer
 				}
 				if ( doBreak )
 					break;
+			}
 	}
 
 }
