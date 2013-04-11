@@ -130,11 +130,13 @@ namespace bitsoccer
 
 		double currentTimeMod = 0.0;
 		double dummy = 4.0;
-		currentTimeMod = fabs(cos(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.5 + 0.1;
+		currentTimeMod = 0.1f;//fabs(cos(modf(glfwGetTime() / 4.0, &dummy) * M_PI)) * 0.5 + 0.1;
 		//currentTimeMod = modf(glfwGetTime(), &dummy);
 
 		u32 numSeg = 9;
 		float inc = 1.0f / (float)(numSeg-1);
+
+		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < numSeg; ++i)
 		{
 			float p0 = (float)i * inc;
@@ -150,9 +152,11 @@ namespace bitsoccer
 				glVertex3i(centerX, centerY, 4);
 				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
 				glVertex3i(x1, y1, 4);
+				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
 				glVertex3i(x0, y0, 4);
 			}
 		}
+		glEnd();
 
 	}
 }

@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Font.h"
+#include "Vec3.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -162,7 +163,7 @@ namespace bitsoccer
 		}
 
 		static char s_printfBuf[1024];
-		int rprintf(int x, int y, Vec3 color, const char* format, ...)
+		int rprintf(int x, int y, const Vec3& color, const char* format, ...)
 		{
 			va_list ap;
 			va_start(ap, format);

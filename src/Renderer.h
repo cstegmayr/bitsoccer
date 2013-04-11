@@ -8,6 +8,7 @@
 namespace bitsoccer
 {
 	class Font;
+	class Vec3;
 
 	namespace Renderer
 	{
@@ -30,7 +31,7 @@ namespace bitsoccer
 		void Terminate();
 		bool IsRunning();
 
-		int rprintf(int x, int y, Vec3 color, const char* format, ...);
+		int rprintf(int x, int y, const Vec3& color, const char* format, ...);
 		int rprintf(int x, int y, const char* format, ...);
 		Font* GetFont();
 

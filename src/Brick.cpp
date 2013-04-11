@@ -1,5 +1,6 @@
 #include "Brick.h"
 #include "Renderer.h"
+#include "Vec3.h"
 
 #include <string.h> // For memset
 #define _USE_MATH_DEFINES
@@ -61,7 +62,7 @@ namespace bitsoccer
 		return true;
 	}
 
-	void Brick::RotateCW()
+	void Brick::RotateCCW()
 	{
 		Color::Type first = m_colors[0];
 		m_colors[0] = m_colors[1];
@@ -70,7 +71,7 @@ namespace bitsoccer
 		m_colors[3] = first;
 	}
 
-	void Brick::RotateCCW()
+	void Brick::RotateCW()
 	{
 		Color::Type first = m_colors[3];
 		m_colors[3] = m_colors[2];
@@ -88,10 +89,11 @@ namespace bitsoccer
 
 	Vec3 ColorPuls( const Vec3& color )
 	{
-		double currentTimeMod = 0.0;
-		double dummy = 2.0;
-		currentTimeMod = fabs(cosf(modf(glfwGetTime() / dummy, &dummy) * M_PI)) * 0.2 + 0.1;
-		Vec3 newColor = Vec3(currentTimeMod+color.r, currentTimeMod+color.g, currentTimeMod+color.b);
+		double pulse_time = 2.0;
+		double m = cosf((modf(glfwGetTime() / pulse_time, &pulse_time)*2.0-1.0) * M_PI) * 0.2;
+		Vec3 pulseCol(color.r > color.g && color.r > color.b, color.g > color.r && color.g > color.b, color.b > color.r && color.b > color.g);
+		pulseCol *= m;
+		Vec3 newColor = pulseCol + color;
 		return newColor;
 	}
 
@@ -127,59 +129,74 @@ namespace bitsoccer
 		if (  brickMode & BrickMode::PossibleMove )
 			brickColor = brickColor * Vec3( 1.9f, 0.05f, 1.9f );
 
-		glColor3f(brickColor.r, brickColor.g, brickColor.b );
-		glVertex3i(posX, posY, 0);
-		glVertex3i(posX, posY+size, 0);
-		glVertex3i(posX+size, posY, 0);
-		
-		// Background upper
-		glVertex3i(posX+size, posY+size, 0);
-		glVertex3i(posX+size, posY, 0);
-		glVertex3i(posX, posY+size, 0);
+		glBegin(GL_TRIANGLES);
+		{
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX, posY, 0);
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX, posY+size, 0);
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX+size, posY, 0);
+			
+			// Background upper
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX+size, posY+size, 0);
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX+size, posY, 0);
+			glColor3f(brickColor.r, brickColor.g, brickColor.b );
+			glVertex3i(posX, posY+size, 0);
 
-		// TRI NORTH
-		Vec3 color = colors[m_colors[Direction::North]];
-		if ( m_colors[Direction::North] == playerColor && m_colors[Direction::North] != Color::Green )
-			color = bitsoccer::ColorPuls(color);
-		else if ( m_colors[Direction::North] != Color::Green )
-			color = bitsoccer::ColorDarken(color);
-		
-		glColor3f(color.r, color.g, color.b);
-		glVertex3i(centerX, centerY, 1);
-		glVertex3i(centerX+width, centerY+halfSize, 1);
-		glVertex3i(centerX-width, centerY+halfSize, 1);
+			// TRI NORTH
+			Vec3 color = colors[m_colors[Direction::North]];
+			if ( m_colors[Direction::North] == playerColor && m_colors[Direction::North] != Color::Green )
+				color = bitsoccer::ColorPuls(color);
+			else if ( m_colors[Direction::North] != Color::Green )
+				color = bitsoccer::ColorDarken(color);
+			
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX, centerY, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX+width, centerY+halfSize, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX-width, centerY+halfSize, 1);
 
-		// TRI EAST
-		color = colors[m_colors[Direction::East]];
-		if ( m_colors[Direction::East] == playerColor && m_colors[Direction::East] != Color::Green )
-			color = bitsoccer::ColorPuls(color);
-		else if ( m_colors[Direction::East] != Color::Green )
-			color = bitsoccer::ColorDarken(color);
-		glColor3f(color.r, color.g, color.b);
-		glVertex3i(centerX, centerY, 1);
-		glVertex3i(centerX+halfSize, centerY+width, 1);
-		glVertex3i(centerX+halfSize, centerY-width, 1);
+			// TRI EAST
+			color = colors[m_colors[Direction::East]];
+			if ( m_colors[Direction::East] == playerColor && m_colors[Direction::East] != Color::Green )
+				color = bitsoccer::ColorPuls(color);
+			else if ( m_colors[Direction::East] != Color::Green )
+				color = bitsoccer::ColorDarken(color);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX, centerY, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX+halfSize, centerY+width, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX+halfSize, centerY-width, 1);
 
-		// TRI SOUTH
-		color = colors[m_colors[Direction::South]];
-		if ( m_colors[Direction::South] == playerColor && m_colors[Direction::South] != Color::Green )
-			color = bitsoccer::ColorPuls(color);
-		else if ( m_colors[Direction::South] != Color::Green )
-			color = bitsoccer::ColorDarken(color);
-		glColor3f(color.r, color.g, color.b);
-		glVertex3i(centerX, centerY, 1);
-		glVertex3i(centerX+width, centerY-halfSize, 1);
-		glVertex3i(centerX-width, centerY-halfSize, 1);
+			// TRI SOUTH
+			color = colors[m_colors[Direction::South]];
+			if ( m_colors[Direction::South] == playerColor && m_colors[Direction::South] != Color::Green )
+				color = bitsoccer::ColorPuls(color);
+			else if ( m_colors[Direction::South] != Color::Green )
+				color = bitsoccer::ColorDarken(color);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX, centerY, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX+width, centerY-halfSize, 1);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX-width, centerY-halfSize, 1);
 
-		// TRI WEST
-		color = colors[m_colors[Direction::West]];
-		if ( m_colors[Direction::West] == playerColor && m_colors[Direction::West] != Color::Green )
-			color = bitsoccer::ColorPuls(color);
-		else if ( m_colors[Direction::West] != Color::Green )
-			color = bitsoccer::ColorDarken(color);
-		glColor3f(color.r, color.g, color.b);
-		glVertex3i(centerX, centerY, 1);
-		glVertex3i(centerX-halfSize, centerY+width, 1);
-		glVertex3i(centerX-halfSize, centerY-width, 1);
+			// TRI WEST
+			color = colors[m_colors[Direction::West]];
+			if ( m_colors[Direction::West] == playerColor && m_colors[Direction::West] != Color::Green )
+				color = bitsoccer::ColorPuls(color);
+			else if ( m_colors[Direction::West] != Color::Green )
+				color = bitsoccer::ColorDarken(color);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3i(centerX, centerY, 1);
+			glVertex3i(centerX-halfSize, centerY+width, 1);
+			glVertex3i(centerX-halfSize, centerY-width, 1);
+		}		
+		glEnd();
 	}
 }

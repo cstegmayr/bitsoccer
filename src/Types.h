@@ -72,27 +72,6 @@ namespace bitsoccer
 	};
 	}
 
-
-	struct Vec3
-	{
-		Vec3() : x(0), y(0), z(0) {}
-		Vec3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
-		union
-		{
-			struct {float r,g,b;};
-			struct {float x,y,z;};
-		};
-
-		Vec3& operator* (const Vec3& v)
-		{
-			x *= v.x;
-			y *= v.y;
-			z *= v.z;
-
-			return (*this);
-		}
-	};
-
 	namespace HitState
 	{
 	enum Type
