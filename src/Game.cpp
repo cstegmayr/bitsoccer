@@ -63,14 +63,16 @@ namespace bitsoccer
 			static double total_time = 0.0;
 			total_time += dt;
 			++frame;
-			if (total_time > 0.33)
-			{
-				double fps = frame / total_time;
-				frame = 0;
-				total_time = 0;
-				printf("%.2f FPS\n", 1.0 / dt);
-			}
 
+			double fps = frame / total_time;
+			Vec3 color(1.0f, 1.0f, 1.0f);
+			Renderer::rprintf(0, 8, color, "%.1f\n", fps);
+
+			if (total_time > 1.0)
+			{
+				frame = 1;
+				total_time = dt;
+			}
 		}
 #endif
 

@@ -1,8 +1,11 @@
 #include "Renderer.h"
+#include "Font.h"
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdarg.h>
 
 namespace bitsoccer
 {
@@ -12,6 +15,7 @@ namespace bitsoccer
 		static int s_height = 600;
 		HitSurface* s_surfaces[256];
 		s32 s_numHitSurfaces;
+		static Font s_fnt;
 
 		void GLFWCALL reshape( int w, int h )
 		{
@@ -21,7 +25,7 @@ namespace bitsoccer
 
 			glMatrixMode( GL_PROJECTION );
 			glLoadIdentity();
-			glOrtho(0.0, (GLdouble)w, 0.0, (GLdouble)h, -64.0, 1.0);
+			glOrtho(0.0, (GLdouble)w, (GLdouble)h, 0.0, -64.0, 1.0);
 
 			glMatrixMode( GL_MODELVIEW );
 			glLoadIdentity();
@@ -65,8 +69,6 @@ namespace bitsoccer
 
 			int x, y;
 			glfwGetMousePos(&x, &y);
-
-			y = s_height - y;
 
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{
@@ -114,7 +116,7 @@ namespace bitsoccer
 				exit( EXIT_FAILURE );
 			}
 			
-			glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
+			//glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);
 			if( !glfwOpenWindow( s_width, s_height, 8, 8, 8, 8, 16, 0, GLFW_WINDOW ) )
 			{
 				fprintf( stderr, "Failed to open GLFW window\n" );
@@ -134,6 +136,14 @@ namespace bitsoccer
 			SetupView(s_width, s_height);
 
 			glEnable(GL_DEPTH_TEST);
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			glEnable(GL_TEXTURE_2D);
+			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+			glEnable(GL_POLYGON_SMOOTH);
+
+			
+			//s_fnt.LoadFontFromPath("sheldon_12x6.tga");
+			s_fnt.LoadFontFromPath("ProFontWindows.ttf", 12);
 		}
 
 		bool IsRunning()
@@ -145,9 +155,46 @@ namespace bitsoccer
 		{			
 			glfwTerminate();
 		}
+
+		Font* GetFont()
+		{
+			return &s_fnt;
+		}
+
+		static char s_printfBuf[1024];
+		int rprintf(int x, int y, Vec3 color, const char* format, ...)
+		{
+			va_list ap;
+			va_start(ap, format);
+			int res = vsnprintf(s_printfBuf, 1024, format, ap);
+			va_end(ap);
+
+			if (res > 0)
+			{
+				glColor3f(color.r, color.g, color.b);
+				s_fnt.DrawText((float)x, (float)y, s_printfBuf);
+			}
+			return res;
+		}
+
+		int rprintf(int x, int y, const char* format, ...)
+		{
+			va_list ap;
+			va_start(ap, format);
+			int res = vsnprintf(s_printfBuf, 1024, format, ap);
+			va_end(ap);
+
+			if (res > 0)
+			{
+				glColor3f(1.0f, 1.0f, 1.0f);
+				s_fnt.DrawText((float)x, (float)y, s_printfBuf);
+			}
+			return res;
+		}
 		
 		void DrawCallback()
 		{
+
 			glBegin(GL_TRIANGLES);
 			for (int i = 0; i < s_numHitSurfaces; ++i)
 			{

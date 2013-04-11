@@ -76,7 +76,7 @@ namespace bitsoccer
 		m_colors[3] = m_colors[2];
 		m_colors[2] = m_colors[1];
 		m_colors[1] = m_colors[0];
-		m_colors[0] = first;
+		m_colors[0	] = first;
 	}
 
 	Vec3 ColorDarken( const Vec3& color )

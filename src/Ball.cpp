@@ -150,7 +150,6 @@ namespace bitsoccer
 				glVertex3i(centerX, centerY, 4);
 				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
 				glVertex3i(x1, y1, 4);
-				glColor3f(currentTimeMod, currentTimeMod, currentTimeMod);
 				glVertex3i(x0, y0, 4);
 			}
 		}
