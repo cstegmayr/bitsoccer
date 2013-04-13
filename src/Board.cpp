@@ -78,31 +78,38 @@ namespace bitsoccer
 		std::vector<u32> queueRows;
 		std::vector<u32> queueCols;
 		std::set<u32> visitedIndicies;
-		u32 currRow = ball->GetRow();
+		s32 currRow = (s32)ball->GetRow();
 		queueRows.push_back(currRow);
-		u32 currCol = ball->GetCol();
+		s32 currCol = (s32)ball->GetCol();
 		queueCols.push_back(currCol);
-		u32 currIndex = CalcIndex(currRow,currIndex);
+		u32 currIndex = CalcIndex((u32)currRow,(u32)currCol);
+		//std::cout << "Ball row: " << currRow << " col: " << currCol << "First Index: " << currIndex << std::endl;
 		visitedIndicies.insert(currIndex);
+
+		u32 searchIndex = CalcIndex(row,col);
+		//std::cout << "Searching for row: " << row << " col: " << col << " index: " << searchIndex << std::endl;
+
 		while ( !queueRows.empty() )
 		{
 			currRow = queueRows.back();
 			queueRows.pop_back();
 			currCol = queueCols.back();
 			queueCols.pop_back();
+			currIndex = CalcIndex((u32)currRow,(u32)currCol);
 			u32 moveDirections = GetPossibleColorMoveDirections(currRow, currCol, playerColor);
-			std::cout << "rP: " << currRow << " cP: " << currCol << std::endl;
-			std::cout << "moveDir: " << moveDirections << std::endl;
+			//std::cout << "rP: " << currRow << " cP: " << currCol << " i: " << currIndex << std::endl;
+			//std::cout << "moveDir: " << moveDirections << std::endl;
 			
 			if ( moveDirections & MoveDirection::ToNorth )
 			{
 				s32 tmpR = currRow + 1;
 				s32 tmpC = currCol;
-				std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
+				//std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
 				currIndex = CalcIndex((u32)tmpR,(u32)tmpC);
 				std::set<u32>::iterator it = visitedIndicies.find(currIndex);
 				if ( it == visitedIndicies.end() )
 				{
+					//std::cout << "New index found: " << currIndex << std::endl;
 					visitedIndicies.insert(currIndex);
 					queueRows.push_back((u32)tmpR);
 					queueCols.push_back((u32)tmpC);
@@ -118,11 +125,12 @@ namespace bitsoccer
 			{
 				s32 tmpR = currRow - 1;
 				s32 tmpC = currCol;
-				std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
+				//std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
 				currIndex = CalcIndex((u32)tmpR,(u32)tmpC);
 				std::set<u32>::iterator it = visitedIndicies.find(currIndex);
 				if ( it == visitedIndicies.end() )
 				{
+					//std::cout << "New index found: " << currIndex << std::endl;
 					visitedIndicies.insert(currIndex);
 					queueRows.push_back((u32)tmpR);
 					queueCols.push_back((u32)tmpC);
@@ -138,11 +146,12 @@ namespace bitsoccer
 			{
 				s32 tmpR = currRow;
 				s32 tmpC = currCol + 1;
-				std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
+				//std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
 				currIndex = CalcIndex((u32)tmpR,(u32)tmpC);
 				std::set<u32>::iterator it = visitedIndicies.find(currIndex);
 				if ( it == visitedIndicies.end() )
 				{
+					//std::cout << "New index found: " << currIndex << std::endl;
 					visitedIndicies.insert(currIndex);
 					queueRows.push_back((u32)tmpR);
 					queueCols.push_back((u32)tmpC);
@@ -158,11 +167,13 @@ namespace bitsoccer
 			{
 				s32 tmpR = currRow;
 				s32 tmpC = currCol - 1;
-				std::cout << "r: " << tmpR << " c: " << tmpC << std::endl;
+				
 				currIndex = CalcIndex((u32)tmpR,(u32)tmpC);
+				//std::cout << "r: " << tmpR << " c: " << tmpC << " i: " << currIndex << std::endl;
 				std::set<u32>::iterator it = visitedIndicies.find(currIndex);
 				if ( it == visitedIndicies.end() )
 				{
+					//std::cout << "New index found: " << currIndex << std::endl;
 					visitedIndicies.insert(currIndex);
 					queueRows.push_back((u32)tmpR);
 					queueCols.push_back((u32)tmpC);
@@ -256,7 +267,9 @@ namespace bitsoccer
 
 	u32 Board::CalcIndex(u32 rowIndex, u32 colIndex) const
 	{
-		return m_width*rowIndex + colIndex; 
+		u32 i = m_width*rowIndex + colIndex;
+		//std::cout << "CalcIndex: r: " << rowIndex << " c: " << colIndex << " w: " << m_width << " i: " << i << std::endl;
+		return i;
 	}
 
 	void Board::SetupHitSurfaces()
