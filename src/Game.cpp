@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Renderer.h"
+#include "Vec3.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,7 +58,6 @@ namespace bitsoccer
 
 	void Game::Update(double dt)
 	{
-#if 0
 		{
 			static int frame = 0;
 			static double total_time = 0.0;
@@ -74,7 +74,6 @@ namespace bitsoccer
 				total_time = dt;
 			}
 		}
-#endif
 
 		// If brick is pressed => Rotate it
 		if (m_looseBrick->IsPressed())
@@ -120,7 +119,6 @@ namespace bitsoccer
 		glPushMatrix();
 		glLoadIdentity();
 
-		glBegin(GL_TRIANGLES);
 		{
 			Color::Type playerColor = GetMovePlayerColor(false);
 			MoveDirection::Type moveDir = (MoveDirection::Type)m_ball->GetMovableColorDirections( m_board, playerColor );
@@ -132,7 +130,6 @@ namespace bitsoccer
 			m_looseBrick->Draw( BrickMode::Normal, playerColor );
 			m_ball->Draw( m_board );
 		}
-		glEnd();
 		glPopMatrix();
 	}
 
