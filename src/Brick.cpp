@@ -35,8 +35,13 @@ namespace bitsoccer
 		m_colors[dir] = color;
 	}
 
-	void Brick::NotifyPosition( u32 row, u32 col )
+	void Brick::NotifyPosition( u32 row, u32 col, BrickAnimation::Type animationType )
 	{
+		if (animationType != BrickAnimation::None)
+		{
+			CreateKeyFramesToPos(row, col, animationType);
+		}
+
 		m_row = row;
 		m_col = col;
 
@@ -107,8 +112,16 @@ namespace bitsoccer
 			Vec3(0.0f, 0.0f, 0.7f)}; // BlueGoal
 
 		u32 size = GetSize();
-		u32 posX = m_col * (size+GetMargin()) + m_originX;
-		u32 posY = m_row * (size+GetMargin()) + m_originY;
+		u32 posX = GetX();
+		u32 posY = GetY();
+		s32 depthOffset = 0;
+
+		if (m_currentAnimation.HasKeyFrames())
+		{
+			posX = (u32)m_currentAnimation.GetCurrentFrame().position.x;
+			posY = (u32)m_currentAnimation.GetCurrentFrame().position.y;
+			depthOffset += 2;
+		}
 
 		u32 halfSize = size / 2;
 		u32 width = 8;
@@ -132,19 +145,19 @@ namespace bitsoccer
 		glBegin(GL_TRIANGLES);
 		{
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX, posY, 0);
+			glVertex3i(posX, posY, depthOffset);
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX, posY+size, 0);
+			glVertex3i(posX, posY+size, depthOffset);
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX+size, posY, 0);
+			glVertex3i(posX+size, posY, depthOffset);
 			
 			// Background upper
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX+size, posY+size, 0);
+			glVertex3i(posX+size, posY+size, depthOffset);
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX+size, posY, 0);
+			glVertex3i(posX+size, posY, depthOffset);
 			glColor3f(brickColor.r, brickColor.g, brickColor.b );
-			glVertex3i(posX, posY+size, 0);
+			glVertex3i(posX, posY+size, depthOffset);
 
 			// TRI NORTH
 			Vec3 color = colors[m_colors[Direction::North]];
@@ -154,11 +167,11 @@ namespace bitsoccer
 				color = bitsoccer::ColorDarken(color);
 			
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX, centerY, 1);
+			glVertex3i(centerX, centerY, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX+width, centerY+halfSize, 1);
+			glVertex3i(centerX+width, centerY+halfSize, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX-width, centerY+halfSize, 1);
+			glVertex3i(centerX-width, centerY+halfSize, 1+depthOffset);
 
 			// TRI EAST
 			color = colors[m_colors[Direction::East]];
@@ -167,11 +180,11 @@ namespace bitsoccer
 			else if ( m_colors[Direction::East] != Color::Green )
 				color = bitsoccer::ColorDarken(color);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX, centerY, 1);
+			glVertex3i(centerX, centerY, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX+halfSize, centerY+width, 1);
+			glVertex3i(centerX+halfSize, centerY+width, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX+halfSize, centerY-width, 1);
+			glVertex3i(centerX+halfSize, centerY-width, 1+depthOffset);
 
 			// TRI SOUTH
 			color = colors[m_colors[Direction::South]];
@@ -180,11 +193,11 @@ namespace bitsoccer
 			else if ( m_colors[Direction::South] != Color::Green )
 				color = bitsoccer::ColorDarken(color);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX, centerY, 1);
+			glVertex3i(centerX, centerY, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX+width, centerY-halfSize, 1);
+			glVertex3i(centerX+width, centerY-halfSize, 1+depthOffset);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX-width, centerY-halfSize, 1);
+			glVertex3i(centerX-width, centerY-halfSize, 1+depthOffset);
 
 			// TRI WEST
 			color = colors[m_colors[Direction::West]];
@@ -193,10 +206,69 @@ namespace bitsoccer
 			else if ( m_colors[Direction::West] != Color::Green )
 				color = bitsoccer::ColorDarken(color);
 			glColor3f(color.r, color.g, color.b);
-			glVertex3i(centerX, centerY, 1);
-			glVertex3i(centerX-halfSize, centerY+width, 1);
-			glVertex3i(centerX-halfSize, centerY-width, 1);
+			glVertex3i(centerX, centerY, 1+depthOffset);
+			glVertex3i(centerX-halfSize, centerY+width, 1+depthOffset);
+			glVertex3i(centerX-halfSize, centerY-width, 1+depthOffset);
 		}		
 		glEnd();
+
+		if (m_currentAnimation.HasKeyFrames() && m_currentAnimation.HasPlayedToEnd())
+		{
+			m_currentAnimation.ClearKeyFrames();
+		}
+	}
+
+	void Brick::Update(float deltaTime)
+	{
+		// Update AnimatableObject
+		if (m_currentAnimation.HasKeyFrames())
+			m_currentAnimation.AddTime(deltaTime);
+	}
+
+	///////////////////////////////////////////////////////
+	// PRIVATE METHODS
+	///////////////////////////////////////////////////////
+
+	void Brick::CreateKeyFramesToPos(u32 row, u32 col, BrickAnimation::Type animationType)
+	{
+		s32 oldX = GetX();
+		s32 oldY = GetY();
+
+		s32	newX = col * (GetSize()+GetMargin()) + m_originX;
+		s32	newY = row * (GetSize()+GetMargin()) + m_originY;
+
+		
+		const Frame& currentEndFrame = m_currentAnimation.GetLastKeyFrame();
+
+		Frame start;
+		start.position = Vec2(oldX, oldY);
+		start.rotation = currentEndFrame.rotation;
+		start.time = currentEndFrame.time+0.01f;
+		m_currentAnimation.AddKeyFrame(start);
+		float curTime = start.time;
+
+		/*if (animationType == BrickAnimation::StandardBrick)
+		{
+			Frame mid = start;
+			mid.time = curTime + 2.0f;
+			curTime = mid.time;
+			m_currentAnimation.AddKeyFrame(mid);
+		}*/
+
+		Frame end;
+		end.position = Vec2(newX, newY);
+		end.rotation = currentEndFrame.rotation; // Const rotation
+		end.time = curTime + 1.0f;
+		m_currentAnimation.AddKeyFrame(end);
+
+		//printf("start pos: [%.2f, %.2f] rot: %.2f time: %.2f\n", start.position.x, start.position.y, start.rotation, start.time);
+		//printf("  end pos: [%.2f, %.2f] rot: %.2f time: %.2f\n", end.position.x, end.position.y, end.rotation, end.time);
+
+
+	}
+
+	void Brick::CreateKeyFramesToRotate(bool CW)
+	{
+
 	}
 }

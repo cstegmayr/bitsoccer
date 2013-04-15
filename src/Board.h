@@ -41,6 +41,7 @@ namespace bitsoccer
 		bool GetMovePathForColor( const Ball* ball, const u32 row, const u32 col, const Color::Type playerColor ) const;
 		u32 GetBrickType( Ball* ball, MoveDirection::Type movableColorDirs, u32 h, u32 w);
 		void Draw( Ball* ball, MoveDirection::Type movableColorDirs, Color::Type playerColor );
+		void Update(float deltaTime);
 		~Board();
 
 	private:

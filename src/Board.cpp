@@ -215,13 +215,25 @@ namespace bitsoccer
 
 	void Board::Draw( Ball* ball, MoveDirection::Type movableColorDirs, Color::Type playerColor )
 	{	
-		for (u32 w = 0; w < m_width; ++w)
+		for (u32 h = 0; h < m_height; ++h)
 		{
-			for (u32 h = 0; h < m_height; ++h)
+			for (u32 w = 0; w < m_width; ++w)
 			{
 				Brick* b = GetBrick(h, w);
 				u32 brickType = GetBrickType(ball, movableColorDirs, h, w);
 				b->Draw( (BrickMode::Type)brickType, playerColor );
+			}
+		}
+	}
+
+	void Board::Update(float deltaTime)
+	{
+		for (u32 h = 0; h < m_height; ++h)
+		{
+			for (u32 w = 0; w < m_width; ++w)
+			{
+				Brick* b = GetBrick(h, w);
+				b->Update( deltaTime );
 			}
 		}
 	}
@@ -387,18 +399,26 @@ namespace bitsoccer
 
 	Brick* Board::Push( Direction::Type dir, u32 row, u32 col, Brick* brick )
 	{
-		s32 rowIncrement = dir == Direction::North  ? 1 : ( dir == Direction::South  ? -1 : 0 );
-		s32 colIncrement = dir == Direction::East  ? 1 : ( dir == Direction::West ? -1 : 0 );
-		u32 numIterations = (u32)abs( (s32)GetWidth()*colIncrement + (s32)GetHeight()*rowIncrement);
-		for ( u32 i = 0; i < numIterations; ++i ) 
-		{			
-			u32 index = CalcIndex(row + rowIncrement*i,col + colIncrement*i);
-			
-			Brick* tmp = m_bricks[index];
+		const s32 rowIncVec[] = {1, 0, -1, 0}; // North, East, South, West
+		const s32 colIncVec[] = {0, 1, 0, -1}; // North, East, South, West
+		s32 rowIncrement = rowIncVec[dir];
+		s32 colIncrement = colIncVec[dir];
+
+		brick->NotifyPosition(row-rowIncrement, col-colIncrement, BrickAnimation::LooseBrick);
+		u32 numIterations = GetWidth() * (u32)abs(colIncrement) + GetHeight() * (u32)abs(rowIncrement);
+
+		for ( s32 i = 0; i < numIterations; ++i ) 
+		{
+			s32 r = (s32)row + rowIncrement*i;
+			s32 c = (s32)col + colIncrement*i;
+			u32 index = CalcIndex(r,c);
+			Brick* tmp = m_bricks[index];			
+			tmp->NotifyPosition(tmp->GetRow(), tmp->GetCol(), BrickAnimation::StandardBrick);
 			m_bricks[index] = brick;
-			brick->NotifyPosition(row + rowIncrement*i,col + colIncrement*i);
+			brick->NotifyPosition(row + rowIncrement*i,col + colIncrement*i, BrickAnimation::StandardBrick);
 			brick = tmp;
 		}
+		brick->NotifyPosition(row + rowIncrement*numIterations,col + colIncrement*numIterations, BrickAnimation::StandardBrick);
 		return brick;
 	}
 

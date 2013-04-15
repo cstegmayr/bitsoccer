@@ -1,6 +1,7 @@
 #include "Mixer.h"
 #include "Board.h"
 #include "Types.h"
+#include "Vec2.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -43,7 +44,7 @@ namespace bitsoccer {
 
 					if (b->IsGoal(Player::Blue) && k== 3 )
 						int hej = 0;
-					b->NotifyPosition(i,j);
+					b->NotifyPosition(i,j, BrickAnimation::None);
 				}
 			}
 		}

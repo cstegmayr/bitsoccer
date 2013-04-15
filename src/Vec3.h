@@ -159,4 +159,9 @@ namespace bitsoccer
 			return sqrtf(Length2());
 		}
 	};
+
+	Vec3 operator* (float f, Vec3 v);
+	Vec3 operator/ (float f, Vec3 v);
+	Vec3 operator+ (float f, Vec3 v);
+	Vec3 operator- (float f, Vec3 v);
 }

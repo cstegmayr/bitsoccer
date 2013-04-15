@@ -104,5 +104,16 @@ namespace bitsoccer
 		};
 
 	}
+
+	namespace BrickAnimation
+	{
+		enum Type
+		{
+			None,
+			LooseBrick,
+			PushedOutBrick,
+			StandardBrick
+		};
+	}
 }
 

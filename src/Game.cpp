@@ -44,11 +44,13 @@ namespace bitsoccer
 		m_looseBrick->SetBoardOrigin(64, 64);
 		m_mixer->Mix(m_board);
 		m_ball->SetPosition( m_board.GetHeight()/2,m_board.GetWidth()/2, m_board);
+		m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2, BrickAnimation::None);
 	}
 
 	u32 Game::PushBoard(Direction::Type dir, u32 row, u32 col)
 	{
 		m_looseBrick = m_board.Push(dir,row,col,m_looseBrick);
+		m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2, BrickAnimation::PushedOutBrick);
 		// returns which directions that are availible to move to
 		u32 movableDirections = m_ball->GetChangedDirections(m_board);
 
@@ -97,6 +99,10 @@ namespace bitsoccer
 			printf("Player state not implemented\n");
 			abort();
 		}
+
+
+		m_board.Update((float)dt);
+		m_looseBrick->Update((float)dt);
 	}
 
 	/**
@@ -125,7 +131,7 @@ namespace bitsoccer
 			
 			playerColor = GetMovePlayerColor(true);
 			m_board.Draw(m_ball, moveDir, playerColor );
-			m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2);
+			//m_looseBrick->NotifyPosition(0, m_board.GetWidth() + 2, false);
 			
 			m_looseBrick->Draw( BrickMode::Normal, playerColor );
 			m_ball->Draw( m_board );
