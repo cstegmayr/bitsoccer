@@ -27,7 +27,7 @@ namespace bitsoccer
 
 	void AnimatableObject::AddKeyFrame(const Frame& keyFrame)
 	{
-		if (keyFrame.time > GetTotalTime())
+		if (keyFrame.time >= GetTotalTime())
 		{
 			m_keyFrames.push_back(keyFrame);
 		}

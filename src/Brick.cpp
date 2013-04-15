@@ -225,6 +225,22 @@ namespace bitsoccer
 			m_currentAnimation.AddTime(deltaTime);
 	}
 
+	void Brick::NotifyPauseInAnimation()
+	{
+		s32 oldX = GetX();
+		s32 oldY = GetY();
+
+		const Frame& currentEndFrame = m_currentAnimation.GetLastKeyFrame();
+
+		Frame kf;
+		kf.position = Vec2(oldX, oldY);
+		kf.rotation = currentEndFrame.rotation;
+		kf.time = currentEndFrame.time;
+		m_currentAnimation.AddKeyFrame(kf);
+		kf.time += 1.0f;
+		m_currentAnimation.AddKeyFrame(kf);
+	}
+
 	///////////////////////////////////////////////////////
 	// PRIVATE METHODS
 	///////////////////////////////////////////////////////
@@ -240,26 +256,15 @@ namespace bitsoccer
 		
 		const Frame& currentEndFrame = m_currentAnimation.GetLastKeyFrame();
 
-		Frame start;
-		start.position = Vec2(oldX, oldY);
-		start.rotation = currentEndFrame.rotation;
-		start.time = currentEndFrame.time+0.01f;
-		m_currentAnimation.AddKeyFrame(start);
-		float curTime = start.time;
+		Frame kf;
+		kf.position = Vec2(oldX, oldY);
+		kf.rotation = currentEndFrame.rotation;
+		kf.time = currentEndFrame.time;
+		m_currentAnimation.AddKeyFrame(kf);
 
-		/*if (animationType == BrickAnimation::StandardBrick)
-		{
-			Frame mid = start;
-			mid.time = curTime + 2.0f;
-			curTime = mid.time;
-			m_currentAnimation.AddKeyFrame(mid);
-		}*/
-
-		Frame end;
-		end.position = Vec2(newX, newY);
-		end.rotation = currentEndFrame.rotation; // Const rotation
-		end.time = curTime + 1.0f;
-		m_currentAnimation.AddKeyFrame(end);
+		kf.position = Vec2(newX, newY);
+		kf.time += 1.0f;
+		m_currentAnimation.AddKeyFrame(kf);
 
 		//printf("start pos: [%.2f, %.2f] rot: %.2f time: %.2f\n", start.position.x, start.position.y, start.rotation, start.time);
 		//printf("  end pos: [%.2f, %.2f] rot: %.2f time: %.2f\n", end.position.x, end.position.y, end.rotation, end.time);

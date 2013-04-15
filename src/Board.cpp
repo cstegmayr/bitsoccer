@@ -413,9 +413,9 @@ namespace bitsoccer
 			s32 c = (s32)col + colIncrement*i;
 			u32 index = CalcIndex(r,c);
 			Brick* tmp = m_bricks[index];			
-			tmp->NotifyPosition(tmp->GetRow(), tmp->GetCol(), BrickAnimation::StandardBrick);
+			tmp->NotifyPauseInAnimation();
 			m_bricks[index] = brick;
-			brick->NotifyPosition(row + rowIncrement*i,col + colIncrement*i, BrickAnimation::StandardBrick);
+			brick->NotifyPosition(r,c, BrickAnimation::StandardBrick);
 			brick = tmp;
 		}
 		brick->NotifyPosition(row + rowIncrement*numIterations,col + colIncrement*numIterations, BrickAnimation::StandardBrick);

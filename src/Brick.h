@@ -20,6 +20,7 @@ namespace bitsoccer
 		void		Draw(BrickMode::Type brickMode, Color::Type playerColor);
 		void		Update(float deltaTime);
 		void		NotifyPosition( u32 row, u32 col, BrickAnimation::Type animationType );
+		void		NotifyPauseInAnimation();
 		u32			GetRow() const { return m_row; }	
 		u32			GetCol() const { return m_col; }
 		u32			GetX() const { return m_col * (GetSize()+GetMargin()) + m_originX; }
